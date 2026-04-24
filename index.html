@@ -1,447 +1,955 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BeautyOS — The Global Beauty Intelligence Platform</title>
+<title>BeautyOS — ระบบจองออนไลน์ สำหรับร้านความงาม</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#0D0D0D;--bone:#F4F0E8;--gold:#C8A96E;--gold2:#E8CC8C;--rose:#C4736A;--sage:#7A9E8E;--cream:#FAF7F2;--mid:#6B6560;--light:#E8E2D8;--white:#FFFFFF;--gradient-gold:linear-gradient(135deg,#C8A96E,#E8CC8C,#C8A96E)}
+:root{
+  --ink:#0D0D0D;--rose:#8B3A4A;--rose2:#C4736A;--gold:#C8A96E;--gold2:#E8CC8C;
+  --cream:#FDF8F2;--bone:#F4EDE4;--mid:#7A6A62;--light:#E8E0D8;--white:#FFFFFF;
+  --sage:#5A8A76;--warn:#D4622A;
+  --grad-gold:linear-gradient(135deg,#C8A96E,#E8CC8C,#C8A96E);
+  --grad-rose:linear-gradient(135deg,#8B3A4A,#C4736A);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;cursor:none}
-.cursor{width:12px;height:12px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,background .2s,width .2s,height .2s;mix-blend-mode:multiply}
-.cursor-ring{width:36px;height:36px;border:1.5px solid var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,opacity .3s;opacity:.5}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 60px;background:rgba(244,240,232,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(200,169,110,.18);transition:all .3s}
-.nav-logo{font-family:'Fraunces',serif;font-size:22px;font-weight:700;letter-spacing:-.5px;color:var(--ink)}
-.nav-logo span{color:var(--gold);font-style:italic}
-.nav-links{display:flex;gap:36px;align-items:center}
-.nav-links a{font-size:13px;font-weight:500;letter-spacing:.5px;color:var(--mid);text-decoration:none;transition:color .2s}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'IBM Plex Sans Thai',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden}
+
+/* ── LANG ── */
+.lang-bar{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--rose);padding:8px 0;text-align:center}
+.lang-inner{display:flex;align-items:center;justify-content:center;gap:8px}
+.lang-msg{font-size:11px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.5px}
+.lang-btns{display:flex;gap:4px}
+.lang-btn{font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 12px;border-radius:20px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;font-family:inherit}
+.lang-btn.active{background:white;color:var(--rose);border-color:white}
+
+/* ── NAV ── */
+nav{position:fixed;top:36px;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;background:rgba(253,248,242,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--light);transition:all .3s}
+.nav-logo{font-family:'Noto Serif Display',serif;font-size:20px;font-weight:400;letter-spacing:-.3px}
+.nav-logo em{font-style:italic;color:var(--rose)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-size:12px;font-weight:500;letter-spacing:.3px;color:var(--mid);text-decoration:none;transition:color .2s}
 .nav-links a:hover{color:var(--ink)}
-.nav-cta{background:var(--ink);color:var(--gold)!important;padding:10px 24px;border-radius:100px;font-weight:600!important;letter-spacing:.3px;transition:background .2s,transform .15s!important}
-.nav-cta:hover{background:var(--gold)!important;color:var(--ink)!important;transform:scale(1.03)!important}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:120px 60px 80px;position:relative;overflow:hidden;text-align:center}
-.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(200,169,110,.12) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(196,115,106,.07) 0%,transparent 60%)}
-.hero-inner{position:relative;z-index:2;max-width:900px}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(200,169,110,.1);border:1px solid rgba(200,169,110,.3);padding:6px 16px;border-radius:100px;margin-bottom:36px;animation:fadeUp .8s ease both}
-.hero-tag::before{content:'◆';font-size:8px}
-h1.hero-title{font-family:'Fraunces',serif;font-size:clamp(52px,8vw,96px);font-weight:300;line-height:1.0;letter-spacing:-2px;color:var(--ink);margin-bottom:28px;animation:fadeUp .8s .1s ease both}
-h1.hero-title em{font-style:italic;color:var(--gold);display:block}
-.hero-sub{font-size:18px;font-weight:300;color:var(--mid);line-height:1.7;max-width:600px;margin:0 auto 48px;animation:fadeUp .8s .2s ease both}
-.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .3s ease both}
-.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--gold);padding:16px 36px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;border:2px solid var(--ink);transition:all .25s;cursor:none}
-.btn-primary:hover{background:var(--gold);color:var(--ink);border-color:var(--gold);transform:translateY(-2px);box-shadow:0 12px 40px rgba(200,169,110,.3)}
-.btn-secondary{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--ink);padding:16px 36px;border-radius:100px;font-size:15px;font-weight:500;text-decoration:none;border:2px solid rgba(13,13,13,.2);transition:all .25s;cursor:none}
-.btn-secondary:hover{border-color:var(--ink);transform:translateY(-2px)}
-.stats-row{margin-top:80px;display:flex;gap:48px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .4s ease both}
-.stat-item{text-align:center}
-.stat-num{font-family:'Fraunces',serif;font-size:42px;font-weight:700;background:var(--gradient-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px}
-.stat-label{font-size:12px;font-weight:500;color:var(--mid);letter-spacing:1px;text-transform:uppercase;margin-top:4px}
-.stat-divider{width:1px;background:var(--light);align-self:stretch}
-section{padding:120px 60px}
-.section-tag{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
-.section-title{font-family:'Fraunces',serif;font-size:clamp(36px,4vw,56px);font-weight:300;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px}
-.section-title em{font-style:italic;color:var(--gold)}
-.section-sub{font-size:17px;font-weight:300;color:var(--mid);line-height:1.7;max-width:500px}
-.problem{background:var(--ink);color:var(--bone)}
-.problem .section-tag{color:var(--gold)}
-.problem .section-title{color:var(--bone)}
-.problem .section-sub{color:rgba(244,240,232,.55)}
-.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:60px;border:1px solid rgba(255,255,255,.06);border-radius:20px;overflow:hidden}
-.problem-card{padding:40px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:background .3s}
-.problem-card:hover{background:rgba(200,169,110,.07)}
-.problem-icon{font-size:28px;margin-bottom:16px}
-.problem-card h4{font-size:17px;font-weight:600;margin-bottom:10px;color:var(--bone)}
-.problem-card p{font-size:14px;color:rgba(244,240,232,.5);line-height:1.7}
-.what{background:var(--cream)}
-.what-inner{max-width:1200px;margin:0 auto}
-.what-split{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.what-visual{background:var(--ink);border-radius:24px;padding:40px;aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
-.what-visual-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(200,169,110,.15) 0%,transparent 60%)}
-.vis-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(200,169,110,.6);position:relative;z-index:1}
-.vis-metric{position:relative;z-index:1;text-align:center}
-.vis-big{font-family:'Fraunces',serif;font-size:64px;font-weight:300;color:var(--gold);line-height:1;letter-spacing:-2px}
-.vis-sub{font-size:13px;color:rgba(244,240,232,.4);margin-top:6px}
-.vis-bars{display:flex;gap:8px;align-items:flex-end;height:60px;position:relative;z-index:1}
-.vis-bar{flex:1;border-radius:4px 4px 0 0;background:rgba(200,169,110,.15);position:relative;overflow:hidden}
-.vis-bar::after{content:'';position:absolute;bottom:0;left:0;right:0;background:var(--gradient-gold);border-radius:4px 4px 0 0;animation:barFill 1.5s ease-out both}
-.vis-bar:nth-child(1){height:35%;--h:35%;--d:.1s}
-.vis-bar:nth-child(2){height:55%;--h:55%;--d:.2s}
-.vis-bar:nth-child(3){height:45%;--h:45%;--d:.3s}
-.vis-bar:nth-child(4){height:70%;--h:70%;--d:.4s}
-.vis-bar:nth-child(5){height:60%;--h:60%;--d:.5s}
-.vis-bar:nth-child(6){height:85%;--h:85%;--d:.6s}
-.vis-bar:nth-child(7){height:75%;--h:75%;--d:.7s}
-.vis-bar::after{height:var(--h);animation-delay:var(--d)}
-.what-features{display:flex;flex-direction:column;gap:28px;margin-top:48px}
-.what-feat{display:flex;gap:16px;align-items:flex-start;padding:24px;border-radius:16px;border:1px solid transparent;transition:all .3s}
-.what-feat:hover{background:white;border-color:var(--light);box-shadow:0 8px 32px rgba(0,0,0,.06)}
-.what-feat-icon{width:44px;height:44px;border-radius:12px;background:rgba(200,169,110,.12);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.what-feat-text h4{font-size:15px;font-weight:600;margin-bottom:4px}
-.what-feat-text p{font-size:13px;color:var(--mid);line-height:1.6}
-.pricing{background:var(--bone)}
-.pricing-inner{max-width:1100px;margin:0 auto}
-.pricing-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-bottom:80px}
-.pricing-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.price-card{background:white;border-radius:24px;padding:40px;border:1px solid var(--light);position:relative;transition:all .3s}
-.price-card:hover{transform:translateY(-6px);box-shadow:0 24px 64px rgba(0,0,0,.1)}
-.price-card.featured{background:var(--ink);border-color:var(--gold);color:var(--bone)}
-.price-card.featured .price-name{color:var(--gold)}
-.price-card.featured .price-feature{color:rgba(244,240,232,.8);border-color:rgba(255,255,255,.08)}
-.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gradient-gold);color:var(--ink);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:100px;white-space:nowrap}
-.price-name{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mid);margin-bottom:20px}
-.price-amount{font-family:'Fraunces',serif;font-size:52px;font-weight:300;letter-spacing:-2px;line-height:1;margin-bottom:6px}
-.price-amount sup{font-size:22px;font-weight:400;letter-spacing:0}
-.price-period{font-size:13px;color:var(--mid);margin-bottom:28px}
-.price-card.featured .price-period{color:rgba(244,240,232,.4)}
-.price-divider{height:1px;background:var(--light);margin:24px 0}
-.price-card.featured .price-divider{background:rgba(255,255,255,.1)}
-.price-features{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
-.price-feature{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--mid);padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,.05)}
-.price-feature:last-child{border-bottom:none;padding-bottom:0}
-.price-check{color:var(--sage);font-size:15px;flex-shrink:0}
-.price-card.featured .price-check{color:var(--gold)}
-.btn-card{display:block;width:100%;text-align:center;padding:14px;border-radius:100px;font-size:14px;font-weight:600;text-decoration:none;cursor:none;transition:all .2s}
-.btn-card-dark{background:var(--ink);color:var(--gold)}
-.btn-card-dark:hover{background:var(--gold);color:var(--ink)}
-.btn-card-gold{background:var(--gradient-gold);color:var(--ink)}
-.btn-card-gold:hover{transform:scale(1.02);box-shadow:0 8px 24px rgba(200,169,110,.4)}
-.btn-card-outline{border:2px solid var(--light);color:var(--ink)}
-.btn-card-outline:hover{border-color:var(--ink)}
-.pitch{background:var(--cream)}
-.pitch-inner{max-width:1100px;margin:0 auto}
-.pitch-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:60px}
-.pitch-option{padding:48px;border-radius:24px;border:1px solid var(--light);position:relative;overflow:hidden;transition:all .3s}
-.pitch-option:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.08)}
-.pitch-option.buy{background:white}
-.pitch-option.saas{background:var(--ink);color:var(--bone)}
-.pitch-decoration{position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.12) 0%,transparent 70%)}
-.pitch-eyebrow{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.pitch-eyebrow.gold{color:var(--gold)}
-.pitch-eyebrow.sage{color:var(--sage)}
-.pitch-h{font-family:'Fraunces',serif;font-size:32px;font-weight:300;letter-spacing:-.5px;margin-bottom:12px}
-.pitch-option.saas .pitch-h{color:var(--bone)}
-.pitch-p{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:28px}
-.pitch-option.saas .pitch-p{color:rgba(244,240,232,.5)}
-.pitch-bullets{display:flex;flex-direction:column;gap:10px;margin-bottom:36px}
-.pitch-bullet{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500}
-.pitch-option.saas .pitch-bullet{color:rgba(244,240,232,.8)}
-.pitch-bullet-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
-.pitch-price-big{font-family:'Fraunces',serif;font-size:44px;font-weight:700;letter-spacing:-1.5px;color:var(--gold);margin-bottom:4px}
-.pitch-price-note{font-size:12px;color:var(--mid);margin-bottom:24px}
-.pitch-option.saas .pitch-price-note{color:rgba(244,240,232,.35)}
-.proof{background:var(--ink);color:var(--bone);padding:100px 60px}
-.proof-inner{max-width:1100px;margin:0 auto}
-.proof-header{text-align:center;margin-bottom:60px}
-.proof-header .section-title{color:var(--bone)}
-.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.proof-card{padding:36px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:20px;transition:all .3s}
-.proof-card:hover{background:rgba(200,169,110,.08);border-color:rgba(200,169,110,.2)}
-.proof-stars{color:var(--gold);font-size:13px;margin-bottom:16px}
-.proof-quote{font-size:14px;color:rgba(244,240,232,.65);line-height:1.75;margin-bottom:24px;font-style:italic}
-.proof-author{font-size:13px;font-weight:600;color:var(--bone)}
-.proof-author-meta{font-size:12px;color:rgba(200,169,110,.6);margin-top:2px}
-.proof-map-label{text-align:center;margin-top:60px;font-size:13px;color:rgba(244,240,232,.35);font-style:italic}
-.world-dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
-.world-dot{font-size:11px;font-weight:500;background:rgba(200,169,110,.1);border:1px solid rgba(200,169,110,.2);color:var(--gold);padding:4px 12px;border-radius:100px}
-.faq{background:var(--cream)}
-.faq-inner{max-width:800px;margin:0 auto}
-.faq-item{border-bottom:1px solid var(--light);overflow:hidden}
-.faq-q{display:flex;justify-content:space-between;align-items:center;padding:24px 0;cursor:none;font-size:16px;font-weight:500;transition:color .2s}
-.faq-q:hover{color:var(--gold)}
-.faq-icon{font-size:20px;color:var(--gold);transition:transform .3s;flex-shrink:0}
+.nav-cta{background:var(--rose)!important;color:white!important;padding:9px 20px;border-radius:8px;font-size:12px;font-weight:700!important;letter-spacing:.3px}
+.nav-cta:hover{background:var(--ink)!important;transform:translateY(-1px)}
+
+/* ── URGENCY BAR ── */
+.urgency-bar{background:var(--ink);color:white;text-align:center;padding:10px;margin-top:36px}
+.urgency-bar span{font-size:12px;font-weight:600;letter-spacing:.3px}
+.urgency-bar em{color:var(--gold);font-style:normal}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 50%,rgba(139,58,74,.06) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 80% 20%,rgba(200,169,110,.08) 0%,transparent 60%)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1140px;margin:0 auto;position:relative;z-index:2;width:100%}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose);background:rgba(139,58,74,.08);border:1px solid rgba(139,58,74,.2);padding:5px 14px;border-radius:4px;margin-bottom:24px}
+h1.hero-title{font-family:'Noto Serif Display',serif;font-size:clamp(40px,5vw,64px);font-weight:300;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px}
+h1.hero-title em{font-style:italic;color:var(--rose);display:block}
+.hero-sub{font-size:15px;font-weight:400;color:var(--mid);line-height:1.75;margin-bottom:32px;max-width:480px}
+.hero-proof{display:flex;align-items:center;gap:12px;margin-bottom:36px;padding:14px 18px;background:white;border-radius:10px;border:1px solid var(--light);width:fit-content}
+.hp-avatars{display:flex}
+.hp-avatar{width:32px;height:32px;border-radius:50%;border:2px solid white;background:var(--grad-rose);display:flex;align-items:center;justify-content:center;font-size:13px;margin-left:-8px}
+.hp-avatar:first-child{margin-left:0}
+.hp-text{font-size:12px;color:var(--mid);line-height:1.5}
+.hp-text strong{color:var(--ink);display:block;font-size:13px}
+.hero-actions{display:flex;flex-direction:column;gap:10px;width:fit-content}
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--rose);color:white;padding:16px 32px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;border:2px solid var(--rose)}
+.btn-primary:hover{background:var(--ink);border-color:var(--ink);transform:translateY(-2px);box-shadow:0 12px 40px rgba(139,58,74,.3)}
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:var(--ink);padding:14px 32px;border-radius:10px;font-size:14px;font-weight:500;text-decoration:none;border:2px solid var(--light);transition:all .25s}
+.btn-secondary:hover{border-color:var(--ink)}
+.hero-note{font-size:11px;color:var(--mid);text-align:center;margin-top:8px}
+
+/* Dashboard mockup */
+.hero-visual{position:relative}
+.dash{background:var(--ink);border-radius:20px;padding:28px;position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.25)}
+.dash-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(200,169,110,.12) 0%,transparent 50%)}
+.dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;position:relative;z-index:1}
+.dash-logo{font-family:'Noto Serif Display',serif;font-size:14px;color:var(--gold);font-style:italic}
+.dash-live{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.5px}
+.dash-live-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);animation:pulse 2s infinite}
+.dash-rev{text-align:center;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:20px;position:relative;z-index:1}
+.dash-rev-label{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.dash-rev-num{font-family:'Noto Serif Display',serif;font-size:42px;font-weight:300;color:var(--gold);letter-spacing:-1px;line-height:1}
+.dash-rev-up{font-size:11px;color:var(--sage);margin-top:4px;font-weight:600}
+.dash-bars{display:flex;gap:6px;align-items:flex-end;height:48px;margin-bottom:20px;position:relative;z-index:1}
+.dash-bar{flex:1;border-radius:3px 3px 0 0;background:rgba(200,169,110,.15);position:relative;overflow:hidden}
+.dash-bar::after{content:'';position:absolute;bottom:0;left:0;right:0;background:var(--grad-gold);border-radius:3px 3px 0 0;animation:barUp 1.5s ease-out both}
+.dash-bar:nth-child(1){height:40%;--bh:40%;--bd:.05s}
+.dash-bar:nth-child(2){height:60%;--bh:60%;--bd:.1s}
+.dash-bar:nth-child(3){height:50%;--bh:50%;--bd:.15s}
+.dash-bar:nth-child(4){height:75%;--bh:75%;--bd:.2s}
+.dash-bar:nth-child(5){height:65%;--bh:65%;--bd:.25s}
+.dash-bar:nth-child(6){height:90%;--bh:90%;--bd:.3s}
+.dash-bar:nth-child(7){height:80%;--bh:80%;--bd:.35s}
+.dash-bar::after{height:var(--bh);animation-delay:var(--bd)}
+.dash-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;position:relative;z-index:1}
+.dash-stat{background:rgba(255,255,255,.05);border-radius:10px;padding:12px 10px;text-align:center}
+.dash-stat-num{font-family:'Noto Serif Display',serif;font-size:20px;color:var(--gold);font-weight:300}
+.dash-stat-label{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+.dash-booking-toast{position:absolute;bottom:-16px;right:-16px;background:white;border-radius:12px;padding:12px 16px;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;min-width:220px;animation:toastIn 1s .8s ease-out both}
+.toast-icon{width:36px;height:36px;border-radius:8px;background:rgba(139,58,74,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.toast-text{font-size:12px;line-height:1.4}
+.toast-text strong{color:var(--rose);display:block;font-size:13px}
+
+/* ── SOCIAL PROOF STRIP ── */
+.proof-strip{background:var(--bone);padding:40px 48px}
+.proof-strip-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center}
+.ps-item{text-align:center}
+.ps-num{font-family:'Noto Serif Display',serif;font-size:32px;font-weight:300;color:var(--rose);letter-spacing:-1px}
+.ps-label{font-size:11px;color:var(--mid);font-weight:600;letter-spacing:.5px;margin-top:2px}
+.ps-divider{width:1px;height:40px;background:var(--light)}
+
+/* ── PROBLEM ── */
+.problem{background:var(--ink);color:white;padding:100px 48px}
+.section-inner{max-width:1140px;margin:0 auto}
+.section-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.section-title{font-family:'Noto Serif Display',serif;font-size:clamp(32px,4vw,52px);font-weight:300;line-height:1.15;letter-spacing:-1px;margin-bottom:16px}
+.section-title em{font-style:italic;color:var(--rose2)}
+.section-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.75;max-width:520px}
+.prob-header{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;margin-bottom:56px}
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:16px;overflow:hidden}
+.prob-card{padding:36px 32px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:background .3s}
+.prob-card:hover{background:rgba(200,169,110,.06)}
+.prob-icon{font-size:24px;margin-bottom:14px}
+.prob-card h4{font-size:15px;font-weight:600;color:white;margin-bottom:8px}
+.prob-card p{font-size:13px;color:rgba(255,255,255,.4);line-height:1.7}
+.prob-cost{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 14px;background:rgba(196,115,106,.1);border:1px solid rgba(196,115,106,.2);border-radius:8px}
+.prob-cost span{font-size:11px;color:#E8917F;font-weight:600}
+
+/* ── SOLUTION ── */
+.solution{background:var(--cream);padding:100px 48px}
+.sol-split{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.sol-features{display:flex;flex-direction:column;gap:20px;margin-top:36px}
+.sol-feat{display:flex;gap:14px;align-items:flex-start;padding:20px;border-radius:12px;border:1px solid transparent;transition:all .3s}
+.sol-feat:hover{background:white;border-color:var(--light);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.sol-feat-ico{width:40px;height:40px;border-radius:10px;background:rgba(139,58,74,.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sol-feat-text h4{font-size:14px;font-weight:600;margin-bottom:3px}
+.sol-feat-text p{font-size:12.5px;color:var(--mid);line-height:1.6}
+.sol-demo{background:var(--ink);border-radius:20px;padding:32px;overflow:hidden;position:relative}
+.sol-demo-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(200,169,110,.1) 0%,transparent 60%)}
+.demo-tabs{display:flex;gap:4px;margin-bottom:24px;position:relative;z-index:1}
+.demo-tab{font-size:10px;font-weight:700;letter-spacing:.5px;padding:6px 14px;border-radius:6px;border:none;cursor:pointer;font-family:'IBM Plex Sans Thai',sans-serif;transition:all .2s;color:rgba(255,255,255,.35);background:transparent}
+.demo-tab.active{background:rgba(200,169,110,.15);color:var(--gold)}
+.demo-content{position:relative;z-index:1;min-height:200px}
+.demo-booking{display:flex;flex-direction:column;gap:10px}
+.demo-booking-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.dbi-left{display:flex;flex-direction:column;gap:2px}
+.dbi-name{font-size:13px;font-weight:500;color:white}
+.dbi-time{font-size:10px;color:rgba(255,255,255,.3)}
+.dbi-status{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px}
+.dbi-status.confirmed{background:rgba(90,138,118,.2);color:var(--sage)}
+.dbi-status.pending{background:rgba(200,169,110,.15);color:var(--gold)}
+
+/* ── PRICING ── */
+.pricing{background:var(--bone);padding:100px 48px}
+.pricing-header{text-align:center;margin-bottom:24px}
+.pricing-subhead{text-align:center;font-size:14px;color:var(--mid);margin-bottom:56px}
+.pricing-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
+.p-card{background:white;border-radius:20px;padding:36px 32px;border:1px solid var(--light);position:relative;transition:all .3s}
+.p-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.p-card.featured{background:var(--ink);border-color:var(--gold);color:white}
+.p-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--grad-gold);color:var(--ink);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 14px;border-radius:20px;white-space:nowrap}
+.p-name{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mid);margin-bottom:16px}
+.p-card.featured .p-name{color:rgba(255,255,255,.4)}
+.p-price{font-family:'Noto Serif Display',serif;font-size:48px;font-weight:300;letter-spacing:-2px;line-height:1;margin-bottom:4px}
+.p-price sup{font-size:20px;font-weight:400;letter-spacing:0}
+.p-period{font-size:12px;color:var(--mid);margin-bottom:24px}
+.p-card.featured .p-period{color:rgba(255,255,255,.35)}
+.p-card.featured .p-price{color:var(--gold)}
+.p-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.p-features li{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--mid);line-height:1.5}
+.p-card.featured .p-features li{color:rgba(255,255,255,.65)}
+.p-features li::before{content:'✓';color:var(--sage);font-size:12px;flex-shrink:0;font-weight:700;margin-top:1px}
+.p-card.featured .p-features li::before{color:var(--gold)}
+.p-btn{display:block;width:100%;text-align:center;padding:13px;border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;font-family:'IBM Plex Sans Thai',sans-serif}
+.p-btn-outline{border:2px solid var(--light);color:var(--ink)}
+.p-btn-outline:hover{border-color:var(--ink);background:var(--ink);color:white}
+.p-btn-gold{background:var(--grad-gold);color:var(--ink)}
+.p-btn-gold:hover{transform:scale(1.02);box-shadow:0 6px 20px rgba(200,169,110,.4)}
+.p-btn-white{background:white;color:var(--ink)}
+.p-btn-white:hover{background:var(--gold);color:var(--ink)}
+
+/* Urgency under pricing */
+.pricing-urgency{max-width:1000px;margin:20px auto 0;padding:16px 24px;background:rgba(212,98,42,.08);border:1px solid rgba(212,98,42,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:10px}
+.pu-icon{font-size:18px}
+.pu-text{font-size:13px;font-weight:600;color:var(--warn)}
+
+/* ── TESTIMONIALS ── */
+.testimonials{background:var(--ink);padding:100px 48px}
+.testi-header{text-align:center;margin-bottom:56px}
+.testi-header .section-title{color:white}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1140px;margin:0 auto}
+.t-card{padding:32px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:16px;transition:all .3s}
+.t-card:hover{background:rgba(200,169,110,.07);border-color:rgba(200,169,110,.2);transform:translateY(-3px)}
+.t-stars{color:var(--gold);font-size:12px;margin-bottom:14px;letter-spacing:2px}
+.t-quote{font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:20px;font-style:italic}
+.t-author{font-size:13px;font-weight:600;color:white}
+.t-meta{font-size:11px;color:rgba(200,169,110,.5);margin-top:2px}
+.testi-world{text-align:center;margin-top:48px}
+.testi-world p{font-size:12px;color:rgba(255,255,255,.25);margin-bottom:14px;font-style:italic}
+.world-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.world-tag{font-size:11px;font-weight:500;background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.15);color:rgba(200,169,110,.6);padding:4px 12px;border-radius:20px}
+
+/* ── FAQ ── */
+.faq-section{background:var(--cream);padding:100px 48px}
+.faq-inner{max-width:720px;margin:0 auto}
+.faq-header{text-align:center;margin-bottom:48px}
+.faq-item{border-bottom:1px solid var(--light)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:22px 0;cursor:pointer;font-size:15px;font-weight:500;transition:color .2s}
+.faq-q:hover{color:var(--rose)}
+.faq-icon{font-size:18px;color:var(--rose);transition:transform .3s;flex-shrink:0}
 .faq-item.open .faq-icon{transform:rotate(45deg)}
-.faq-a{font-size:14px;color:var(--mid);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;padding-bottom:0}
-.faq-item.open .faq-a{max-height:300px;padding-bottom:24px}
-.cta-final{background:var(--bone);text-align:center;padding:140px 60px}
-.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-footer{background:var(--ink);color:rgba(244,240,232,.4);padding:60px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px}
-.footer-brand{grid-column:span 1}
-.footer-logo{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--bone);margin-bottom:12px}
-.footer-logo span{color:var(--gold);font-style:italic}
-.footer-tagline{font-size:12px;line-height:1.7}
-.footer-col h5{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(200,169,110,.6);margin-bottom:16px}
-.footer-col a{display:block;font-size:13px;color:rgba(244,240,232,.45);text-decoration:none;margin-bottom:10px;transition:color .2s}
-.footer-col a:hover{color:var(--gold)}
-.footer-bottom{background:var(--ink);padding:24px 60px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center}
-.footer-bottom p{font-size:12px;color:rgba(244,240,232,.25)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-@keyframes barFill{from{height:0}to{height:var(--h)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.float{animation:float 4s ease-in-out infinite}
-.reveal{opacity:0;transform:translateY(40px);transition:all .7s cubic-bezier(.16,1,.3,1)}
-.reveal.in{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:.1s}
-.reveal-d2{transition-delay:.2s}
-.reveal-d3{transition-delay:.3s}
-.reveal-d4{transition-delay:.4s}
-.counter{font-variant-numeric:tabular-nums}
-@media(max-width:900px){nav{padding:16px 24px}.nav-links{display:none}section{padding:80px 24px}.hero{padding:100px 24px 60px}.problem-grid,.what-split,.pricing-intro,.pricing-cards,.pitch-grid,.proof-grid{grid-template-columns:1fr}footer{grid-template-columns:1fr 1fr}.stats-row{gap:24px}.stat-divider{display:none}}
-.live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(122,158,142,.1);border:1px solid rgba(122,158,142,.3);color:var(--sage);font-size:11px;font-weight:600;letter-spacing:.5px;padding:5px 12px;border-radius:100px;margin-bottom:12px}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:pulse 2s infinite}
+.faq-a{font-size:13.5px;color:var(--mid);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s}
+.faq-item.open .faq-a{max-height:250px;padding-bottom:22px}
+
+/* ── CTA FINAL ── */
+.cta-final{background:var(--rose);padding:100px 48px;text-align:center}
+.cta-final .section-title{color:white}
+.cta-final .section-title em{color:var(--gold2)}
+.cta-final-sub{font-size:15px;color:rgba(255,255,255,.65);max-width:480px;margin:0 auto 40px;line-height:1.75}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-white{background:white;color:var(--rose);padding:16px 36px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;border:2px solid white;transition:all .25s;font-family:'IBM Plex Sans Thai',sans-serif}
+.btn-white:hover{background:transparent;color:white}
+.btn-outline-white{background:transparent;color:white;padding:14px 36px;border-radius:10px;font-size:14px;font-weight:500;text-decoration:none;border:2px solid rgba(255,255,255,.4);transition:all .25s;font-family:'IBM Plex Sans Thai',sans-serif}
+.btn-outline-white:hover{border-color:white}
+.cta-guarantee{margin-top:28px;font-size:12px;color:rgba(255,255,255,.45)}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);color:rgba(255,255,255,.35);padding:48px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
+.f-logo{font-family:'Noto Serif Display',serif;font-size:18px;color:rgba(255,255,255,.75);margin-bottom:10px}
+.f-logo em{font-style:italic;color:var(--rose2)}
+.f-tagline{font-size:11.5px;line-height:1.7}
+.f-col h5{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(200,169,110,.5);margin-bottom:14px}
+.f-col a{display:block;font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:8px;transition:color .2s}
+.f-col a:hover{color:var(--gold)}
+.f-bottom{background:var(--ink);padding:20px 48px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center}
+.f-bottom p{font-size:11px;color:rgba(255,255,255,.2)}
+
+/* ── ANIMATIONS ── */
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-.outreach-section{background:var(--ink);color:var(--bone);padding:100px 60px}
-.outreach-inner{max-width:1100px;margin:0 auto}
-.outreach-split{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:start}
-.outreach-stats{display:flex;flex-direction:column;gap:20px;margin-top:40px}
-.outreach-stat{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px}
-.os-label{font-size:13px;color:rgba(244,240,232,.5)}
-.os-value{font-family:'Fraunces',serif;font-size:22px;color:var(--gold);font-weight:300}
-.outreach-panel{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:32px}
-.op-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
-.op-title{font-size:13px;font-weight:600;color:var(--gold);letter-spacing:.5px}
-.op-filter{display:flex;gap:8px}
-.op-filter-btn{font-size:11px;font-weight:600;padding:5px 12px;border-radius:100px;border:none;cursor:none;transition:all .2s}
-.op-filter-btn.active{background:var(--gold);color:var(--ink)}
-.op-filter-btn:not(.active){background:rgba(255,255,255,.07);color:rgba(244,240,232,.5)}
-.outreach-list{display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto}
-.outreach-item{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;transition:all .2s}
-.outreach-item:hover{background:rgba(200,169,110,.07);border-color:rgba(200,169,110,.15)}
-.oi-left{display:flex;flex-direction:column;gap:3px}
-.oi-name{font-size:13px;font-weight:500;color:var(--bone)}
-.oi-meta{font-size:11px;color:rgba(244,240,232,.35)}
-.oi-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
-.oi-method{font-size:10px;font-weight:600;padding:3px 10px;border-radius:100px;letter-spacing:.3px}
-.oi-method.call{background:rgba(196,115,106,.2);color:#E8917F}
-.oi-method.line{background:rgba(122,158,142,.2);color:var(--sage)}
-.oi-method.form{background:rgba(200,169,110,.15);color:var(--gold)}
-.oi-priority{font-size:10px;color:rgba(244,240,232,.3)}
+@keyframes barUp{from{height:0}to{height:var(--bh)}}
+@keyframes toastIn{from{opacity:0;transform:translate(20px,20px)}to{opacity:1;transform:translate(0,0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.float-anim{animation:float 5s ease-in-out infinite}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  nav{padding:12px 20px;top:36px}
+  .hero{padding:100px 20px 60px;min-height:auto}
+  .hero-grid,.prob-header,.prob-grid,.sol-split,.pricing-cards,.testi-grid{grid-template-columns:1fr}
+  .pricing-cards{gap:16px}
+  .proof-strip{padding:32px 20px}
+  .prob-grid{gap:1px}
+  section,.problem,.solution,.pricing,.testimonials,.faq-section,.cta-final{padding:72px 20px}
+  footer{grid-template-columns:1fr 1fr;padding:32px 20px}
+  .f-bottom{padding:16px 20px;flex-direction:column;gap:8px;text-align:center}
+  .hero-actions{width:100%}
+  .btn-primary,.btn-secondary{width:100%;text-align:center}
+  .urgency-bar{display:none}
+  nav{top:36px}
+}
+
+/* ── LANG DISPLAY ── */
+.th{display:none}.en{display:none}.zh{display:none}
+html[lang=th] .th{display:block}html[lang=th] .en{display:none}html[lang=th] .zh{display:none}
+html[lang=en] .en{display:block}html[lang=en] .th{display:none}html[lang=en] .zh{display:none}
+html[lang=zh] .zh{display:block}html[lang=zh] .th{display:none}html[lang=zh] .en{display:none}
+.th,.en,.zh{display:block}
+/* override by lang */
+html[lang=th] .en,html[lang=th] .zh{display:none!important}
+html[lang=en] .th,html[lang=en] .zh{display:none!important}
+html[lang=zh] .th,html[lang=zh] .en{display:none!important}
+/* inline spans */
+span.th,span.en,span.zh{display:inline}
+html[lang=th] span.en,html[lang=th] span.zh{display:none!important}
+html[lang=en] span.th,html[lang=en] span.zh{display:none!important}
+html[lang=zh] span.th,html[lang=zh] span.en{display:none!important}
 </style>
 </head>
 <body>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<nav>
-  <div class="nav-logo">Beauty<span>OS</span></div>
-  <div class="nav-links">
-    <a href="#what">Platform</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#outreach">Outreach</a>
-    <a href="#faq">FAQ</a>
-    <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="nav-cta">Get Started →</a>
-  </div>
-</nav>
-<div class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-tag">The Future of Beauty Business</div>
-    <h1 class="hero-title">Run your salon.<br><em>Own your market.</em></h1>
-    <p class="hero-sub">The complete booking, management & analytics platform — built for beauty professionals worldwide. One link. Zero friction. Total control.</p>
-    <div class="hero-actions">
-      <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-primary">See Pricing & Plans →</a>
-      <a href="#what" class="btn-secondary">Watch Demo ▶</a>
-    </div>
-    <div class="stats-row">
-      <div class="stat-item"><div class="stat-num counter" data-target="51000">0</div><div class="stat-label">Salons in Database</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-num counter" data-target="40">0</div><div class="stat-label">Countries Covered</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">Online Booking</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-num counter" data-target="8">0</div><div class="stat-label">Languages</div></div>
+
+<!-- ── LANG BAR ── -->
+<div class="lang-bar">
+  <div class="lang-inner">
+    <span class="lang-msg">
+      <span class="th">เลือกภาษา:</span>
+      <span class="en">Select Language:</span>
+      <span class="zh">选择语言：</span>
+    </span>
+    <div class="lang-btns">
+      <button class="lang-btn active" onclick="setLang('th')">🇹🇭 ไทย</button>
+      <button class="lang-btn" onclick="setLang('en')">🇺🇸 EN</button>
+      <button class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</button>
     </div>
   </div>
 </div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">Beauty<em>OS</em></div>
+  <div class="nav-links">
+    <a href="#solution">
+      <span class="th">ฟีเจอร์</span><span class="en">Features</span><span class="zh">功能</span>
+    </a>
+    <a href="#pricing">
+      <span class="th">ราคา</span><span class="en">Pricing</span><span class="zh">价格</span>
+    </a>
+    <a href="#faq">FAQ</a>
+    <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="nav-cta">
+      <span class="th">ซื้อเลย →</span><span class="en">Buy Now →</span><span class="zh">立即购买 →</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ── URGENCY BAR ── -->
+<div class="urgency-bar" style="position:fixed;top:36px;left:0;right:0;z-index:99;margin-top:36px">
+  <span class="th">⏰ โปรโมชั่นเปิดตัว — ราคาพิเศษ <em>$149</em> สำหรับ 50 ออร์เดอร์แรกเท่านั้น · เหลืออีก <em id="spots">23</em> ที่</span>
+  <span class="en">⏰ Launch Price — <em>$149</em> for first 50 orders only · Only <em id="spots-en">23</em> left</span>
+  <span class="zh">⏰ 限时发布价 — 仅前50单享 <em>$149</em> · 还剩 <em id="spots-zh">23</em> 个名额</span>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero" style="padding-top:160px">
+  <div class="hero-bg"></div>
+  <div class="hero-grid">
+    <div>
+      <!-- AUTHORITY TAG -->
+      <div class="hero-tag">
+        <span class="th">✦ แพลตฟอร์มระบบจอง #1 สำหรับร้านความงาม</span>
+        <span class="en">✦ #1 Booking Platform for Beauty Salons</span>
+        <span class="zh">✦ 美容院 #1 预约管理平台</span>
+      </div>
+
+      <!-- HEADLINE — Pain-focused -->
+      <h1 class="hero-title">
+        <span class="th">ร้านคุณเสียลูกค้า<br><em>ทุกคืน หลัง 6 โมง</em></span>
+        <span class="en">Your salon loses clients<br><em>every night after 6PM</em></span>
+        <span class="zh">每晚6点后<br><em>你的店还在丢客户</em></span>
+      </h1>
+
+      <p class="hero-sub">
+        <span class="th">ลูกค้าหาร้านตี 2 แต่ไม่มีระบบรับจอง — เขาไปร้านคู่แข่งทันที BeautyOS เปิดรับจอง 24 ชม. ออโต้ทุกอย่าง ไม่ต้องมีพนักงาน</span>
+        <span class="en">Customers search at 2AM but you have no booking system — they go straight to your competitor. BeautyOS takes bookings 24/7, fully automated, zero staff needed.</span>
+        <span class="zh">顾客凌晨两点找美容院，但你没有预约系统——他们直接去了竞争对手那里。BeautyOS 24小时自动接单，无需员工值班。</span>
+      </p>
+
+      <!-- SOCIAL PROOF — borrowed authority -->
+      <div class="hero-proof">
+        <div class="hp-avatars">
+          <div class="hp-avatar">💆</div>
+          <div class="hp-avatar">💅</div>
+          <div class="hp-avatar">💄</div>
+          <div class="hp-avatar">✂️</div>
+        </div>
+        <div class="hp-text">
+          <strong>
+            <span class="th">เจ้าของร้าน 200+ ร้านใช้งานอยู่</span>
+            <span class="en">200+ salon owners already using this</span>
+            <span class="zh">超过200家美容院正在使用</span>
+          </strong>
+          <span class="th">Bangkok · Seoul · London · Singapore</span>
+          <span class="en">Bangkok · Seoul · London · Singapore</span>
+          <span class="zh">曼谷 · 首尔 · 伦敦 · 新加坡</span>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-primary">
+          <span class="th">🛒 ซื้อ BeautyOS Pro — $149</span>
+          <span class="en">🛒 Get BeautyOS Pro — $149</span>
+          <span class="zh">🛒 立即购买 BeautyOS Pro — $149</span>
+        </a>
+        <a href="#solution" class="btn-secondary">
+          <span class="th">▶ ดูว่าระบบทำอะไรได้บ้าง</span>
+          <span class="en">▶ See how it works</span>
+          <span class="zh">▶ 了解系统功能</span>
+        </a>
+        <div class="hero-note">
+          <span class="th">✓ ดาวน์โหลดทันที &nbsp;·&nbsp; ✓ ไม่มีค่ารายเดือน &nbsp;·&nbsp; ✓ 1 ไฟล์ ใช้ได้เลย</span>
+          <span class="en">✓ Instant download &nbsp;·&nbsp; ✓ No monthly fee &nbsp;·&nbsp; ✓ 1 file, live in minutes</span>
+          <span class="zh">✓ 即时下载 &nbsp;·&nbsp; ✓ 无月费 &nbsp;·&nbsp; ✓ 单文件，立即上线</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD VISUAL -->
+    <div class="hero-visual float-anim">
+      <div class="dash">
+        <div class="dash-bg"></div>
+        <div class="dash-top">
+          <div class="dash-logo">BeautyOS</div>
+          <div class="dash-live"><span class="dash-live-dot"></span>
+            <span class="th">สดๆ</span><span class="en">LIVE</span><span class="zh">实时</span>
+          </div>
+        </div>
+        <div class="dash-rev">
+          <div class="dash-rev-label">
+            <span class="th">รายรับเดือนนี้</span><span class="en">Revenue This Month</span><span class="zh">本月收入</span>
+          </div>
+          <div class="dash-rev-num">฿87,450</div>
+          <div class="dash-rev-up">↑ 23% vs last month</div>
+        </div>
+        <div class="dash-bars">
+          <div class="dash-bar"></div><div class="dash-bar"></div><div class="dash-bar"></div>
+          <div class="dash-bar"></div><div class="dash-bar"></div><div class="dash-bar"></div>
+          <div class="dash-bar"></div>
+        </div>
+        <div class="dash-stats">
+          <div class="dash-stat"><div class="dash-stat-num">47</div><div class="dash-stat-label">
+            <span class="th">จองวันนี้</span><span class="en">Bookings</span><span class="zh">今日预约</span>
+          </div></div>
+          <div class="dash-stat"><div class="dash-stat-num">8</div><div class="dash-stat-label">
+            <span class="th">สาขา</span><span class="en">Branches</span><span class="zh">门店</span>
+          </div></div>
+          <div class="dash-stat"><div class="dash-stat-num">4.9★</div><div class="dash-stat-label">
+            <span class="th">รีวิว</span><span class="en">Rating</span><span class="zh">评分</span>
+          </div></div>
+        </div>
+
+        <!-- TOAST -->
+        <div class="dash-booking-toast">
+          <div class="toast-icon">📅</div>
+          <div class="toast-text">
+            <strong>
+              <span class="th">การจองใหม่!</span><span class="en">New Booking!</span><span class="zh">新预约！</span>
+            </strong>
+            <span class="th">พลอย · Brow Lamination · พรุ่งนี้ 10:00</span>
+            <span class="en">Ploy · Brow Lamination · Tomorrow 10:00</span>
+            <span class="zh">小美 · 眉毛修复 · 明天10:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SOCIAL PROOF STRIP ── -->
+<div class="proof-strip">
+  <div class="proof-strip-inner">
+    <div class="ps-item"><div class="ps-num">51K+</div><div class="ps-label">
+      <span class="th">ร้านในฐานข้อมูล</span><span class="en">Salons in DB</span><span class="zh">数据库中美容院</span>
+    </div></div>
+    <div class="ps-divider"></div>
+    <div class="ps-item"><div class="ps-num">40+</div><div class="ps-label">
+      <span class="th">ประเทศ</span><span class="en">Countries</span><span class="zh">国家</span>
+    </div></div>
+    <div class="ps-divider"></div>
+    <div class="ps-item"><div class="ps-num">24/7</div><div class="ps-label">
+      <span class="th">รับจองออโต้</span><span class="en">Auto Booking</span><span class="zh">自动接单</span>
+    </div></div>
+    <div class="ps-divider"></div>
+    <div class="ps-item"><div class="ps-num">3</div><div class="ps-label">
+      <span class="th">นาทีติดตั้ง</span><span class="en">Min to Deploy</span><span class="zh">分钟部署</span>
+    </div></div>
+    <div class="ps-divider"></div>
+    <div class="ps-item"><div class="ps-num">0</div><div class="ps-label">
+      <span class="th">ค่ารายเดือน (แพ็กซื้อขาด)</span><span class="en">Monthly Fee (one-time)</span><span class="zh">月费（买断）</span>
+    </div></div>
+  </div>
+</div>
+
+<!-- ── PROBLEM ── -->
 <section class="problem" id="problem">
-  <div style="max-width:1100px;margin:0 auto;">
-    <div class="reveal"><div class="section-tag">The Problem</div><h2 class="section-title">Beauty salons are <em>invisible</em> online</h2><p class="section-sub">Most salons still rely on WhatsApp, Line, and word-of-mouth — losing bookings every single day.</p></div>
-    <div class="problem-grid reveal reveal-d1">
-      <div class="problem-card"><div class="problem-icon">📵</div><h4>No online booking</h4><p>Customers can't book after hours. Missed calls = missed revenue. Your competition is already digital.</p></div>
-      <div class="problem-card"><div class="problem-icon">📊</div><h4>Zero visibility into revenue</h4><p>No dashboards. No reports. No idea which service makes money. Running blind is expensive.</p></div>
-      <div class="problem-card"><div class="problem-icon">👥</div><h4>Staff management chaos</h4><p>Commissions tracked on paper. Scheduling on LINE groups. Payroll by memory. This costs time and trust.</p></div>
-      <div class="problem-card"><div class="problem-icon">🌍</div><h4>Can't grow internationally</h4><p>No multilingual support. No global payment options. Invisible to customers who don't speak Thai.</p></div>
-    </div>
-  </div>
-</section>
-<section class="what" id="what">
-  <div class="what-inner">
-    <div class="what-split">
+  <div class="section-inner">
+    <div class="prob-header reveal">
       <div>
-        <div class="reveal"><div class="section-tag">The Solution</div><h2 class="section-title">One file.<br><em>Infinite power.</em></h2><p class="section-sub">BeautyOS is a fully self-contained HTML booking & management system. Deploy it anywhere in minutes. No server needed.</p></div>
-        <div class="what-features reveal reveal-d1">
-          <div class="what-feat"><div class="what-feat-icon">📅</div><div class="what-feat-text"><h4>Smart Online Booking</h4><p>Real-time calendar, service selection, deposit collection — in any language.</p></div></div>
-          <div class="what-feat"><div class="what-feat-icon">📈</div><div class="what-feat-text"><h4>Revenue Dashboard</h4><p>Daily/weekly/monthly revenue, top services, customer analytics — live.</p></div></div>
-          <div class="what-feat"><div class="what-feat-icon">👥</div><div class="what-feat-text"><h4>Staff & Agent System</h4><p>Auto-calculate commissions, track performance, manage multiple branches.</p></div></div>
-          <div class="what-feat"><div class="what-feat-icon">🎁</div><div class="what-feat-text"><h4>Loyalty & Promos</h4><p>Points system, package deals, time-limited promotions that drive repeat visits.</p></div></div>
+        <div class="section-label">
+          <span class="th">ปัญหาที่เจ้าของร้านเจอทุกวัน</span>
+          <span class="en">Problems Every Salon Owner Faces</span>
+          <span class="zh">每位美容院老板每天面临的问题</span>
+        </div>
+        <h2 class="section-title">
+          <span class="th">ธุรกิจ<em>สูญรายได้</em><br>ทุกวัน โดยไม่รู้ตัว</span>
+          <span class="en">Your business is<br><em>bleeding money</em> daily</span>
+          <span class="zh">你的生意<br>每天都在<em>悄悄漏财</em></span>
+        </h2>
+      </div>
+      <p class="section-sub reveal d1">
+        <span class="th">ร้านส่วนใหญ่ยังพึ่ง LINE, WhatsApp และปากต่อปาก — เสียการจองทุกวัน ในขณะที่คู่แข่งอัปเกรดระบบแล้ว</span>
+        <span class="en">Most salons still rely on LINE, WhatsApp and word-of-mouth — losing bookings every single day while competitors upgrade their systems.</span>
+        <span class="zh">大多数美容院仍依赖Line、WhatsApp和口碑——每天在流失预约，而竞争对手已完成系统升级。</span>
+      </p>
+    </div>
+    <div class="prob-grid reveal">
+      <div class="prob-card">
+        <div class="prob-icon">📵</div>
+        <h4><span class="th">ไม่มีระบบจองออนไลน์</span><span class="en">No Online Booking</span><span class="zh">没有在线预约系统</span></h4>
+        <p><span class="th">ลูกค้าโทรหาตี 2 ไม่ได้ก็ไปร้านอื่น พนักงานรับโทรศัพท์ไม่ทัน = รายได้หาย</span><span class="en">Customers who call at 2AM and get no answer go elsewhere. Missed calls = lost revenue.</span><span class="zh">凌晨两点打电话没人接，顾客就去别家了。漏接电话=漏掉收入。</span></p>
+        <div class="prob-cost"><span>💸 <span class="th">เสียโดยเฉลี่ย ฿15,000/เดือน</span><span class="en">Avg. ฿15,000/mo lost</span><span class="zh">平均每月损失 ฿15,000</span></span></div>
+      </div>
+      <div class="prob-card">
+        <div class="prob-icon">📊</div>
+        <h4><span class="th">ไม่รู้ว่าบริการไหนทำเงิน</span><span class="en">No Revenue Visibility</span><span class="zh">不知道哪个项目赚钱</span></h4>
+        <p><span class="th">ไม่มีแดชบอร์ด บริหารธุรกิจแบบตาบอด ไม่รู้ว่าควรโปรโมทอะไร ลดอะไร</span><span class="en">No dashboard. Running blind. You don't know which service to push or cut.</span><span class="zh">没有数据面板，盲目经营，不知道应该主推哪个项目或砍掉哪个。</span></p>
+        <div class="prob-cost"><span>💸 <span class="th">ตัดสินใจผิดพลาด = ขาดทุนซ้ำๆ</span><span class="en">Bad decisions = repeated losses</span><span class="zh">决策失误=反复亏损</span></span></div>
+      </div>
+      <div class="prob-card">
+        <div class="prob-icon">👥</div>
+        <h4><span class="th">จัดการพนักงานยุ่งยาก</span><span class="en">Staff Management Chaos</span><span class="zh">员工管理混乱</span></h4>
+        <p><span class="th">คอมมิชชั่นนับมือ ตารางงานใน LINE กลุ่ม เงินเดือนใช้ความจำ — เสียเวลาและความเชื่อใจ</span><span class="en">Commissions on paper. Scheduling in LINE groups. Payroll from memory. Kills time and trust.</span><span class="zh">提成手工计算，排班在Line群组，工资靠记忆——浪费时间和信任。</span></p>
+        <div class="prob-cost"><span>💸 <span class="th">เสียเวลา 10+ ชม./เดือน</span><span class="en">10+ hours wasted/month</span><span class="zh">每月浪费10+小时</span></span></div>
+      </div>
+      <div class="prob-card">
+        <div class="prob-icon">🌍</div>
+        <h4><span class="th">เข้าไม่ถึงลูกค้าต่างชาติ</span><span class="en">Invisible to International Clients</span><span class="zh">触达不了外国顾客</span></h4>
+        <p><span class="th">ไม่รองรับหลายภาษา ไม่มีช่องทางจองสำหรับนักท่องเที่ยว — ปล่อยให้โอกาสผ่านไป</span><span class="en">No multilingual support. No booking flow for tourists. Letting opportunities walk past.</span><span class="zh">不支持多语言，没有为外国游客设计的预约流程——白白放走机会。</span></p>
+        <div class="prob-cost"><span>💸 <span class="th">นักท่องเที่ยวจ่ายเฉลี่ย 3x มากกว่า</span><span class="en">Tourists pay 3x more on average</span><span class="zh">外国游客平均消费是本地的3倍</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOLUTION ── -->
+<section class="solution" id="solution">
+  <div class="section-inner">
+    <div class="sol-split">
+      <div>
+        <div class="reveal">
+          <div class="section-label" style="color:var(--rose)">
+            <span class="th">ทางออก</span><span class="en">The Solution</span><span class="zh">解决方案</span>
+          </div>
+          <h2 class="section-title">
+            <span class="th">ไฟล์เดียว.<br><em>ครบทุกอย่าง.</em></span>
+            <span class="en">One file.<br><em>Everything inside.</em></span>
+            <span class="zh">一个文件.<br><em>功能全包.</em></span>
+          </h2>
+          <p style="font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:8px">
+            <span class="th">BeautyOS คือระบบจองและจัดการร้านความงามแบบครบวงจร อยู่ในไฟล์ HTML ไฟล์เดียว เปิดได้ทุกที่ ไม่ต้องติดตั้ง ไม่ต้องมีเซิร์ฟเวอร์</span>
+            <span class="en">BeautyOS is a complete salon booking & management system inside a single HTML file. Works anywhere, no installation, no server needed.</span>
+            <span class="zh">BeautyOS 是一个完整的美容院预约与管理系统，只需一个HTML文件。可在任何地方运行，无需安装，无需服务器。</span>
+          </p>
+        </div>
+        <div class="sol-features">
+          <div class="sol-feat reveal d1">
+            <div class="sol-feat-ico">📅</div>
+            <div class="sol-feat-text">
+              <h4><span class="th">ระบบจองอัจฉริยะ 24/7</span><span class="en">Smart 24/7 Booking</span><span class="zh">智能24小时预约</span></h4>
+              <p><span class="th">ปฏิทินเรียลไทม์ เลือกบริการ เก็บมัดจำ ในทุกภาษา ไม่มีพลาด</span><span class="en">Real-time calendar, service selection, deposit collection — in any language.</span><span class="zh">实时日历、服务选择、押金收取——支持多种语言。</span></p>
+            </div>
+          </div>
+          <div class="sol-feat reveal d2">
+            <div class="sol-feat-ico">📈</div>
+            <div class="sol-feat-text">
+              <h4><span class="th">แดชบอร์ดรายได้แบบ Live</span><span class="en">Live Revenue Dashboard</span><span class="zh">实时收入看板</span></h4>
+              <p><span class="th">รายรับรายวัน/สัปดาห์/เดือน บริการที่ดีที่สุด สถิติลูกค้า — ดูสดๆ</span><span class="en">Daily/weekly/monthly revenue, top services, customer analytics — live.</span><span class="zh">日/周/月收入、热门项目、客户分析——实时查看。</span></p>
+            </div>
+          </div>
+          <div class="sol-feat reveal d3">
+            <div class="sol-feat-ico">👥</div>
+            <div class="sol-feat-text">
+              <h4><span class="th">ระบบพนักงาน & ตัวแทน</span><span class="en">Staff & Agent System</span><span class="zh">员工与代理系统</span></h4>
+              <p><span class="th">คำนวณคอมมิชชั่นอัตโนมัติ ติดตามประสิทธิภาพ จัดการหลายสาขา</span><span class="en">Auto-calculate commissions, track performance, manage multiple branches.</span><span class="zh">自动计算提成、绩效追踪、多门店管理。</span></p>
+            </div>
+          </div>
+          <div class="sol-feat reveal d4">
+            <div class="sol-feat-ico">🎁</div>
+            <div class="sol-feat-text">
+              <h4><span class="th">สะสมแต้ม & โปรโมชั่น</span><span class="en">Loyalty & Promos</span><span class="zh">积分与促销系统</span></h4>
+              <p><span class="th">ระบบแต้ม แพ็กเกจ โปรโมชั่นจำกัดเวลา กระตุ้นลูกค้าให้กลับมาใช้ซ้ำ</span><span class="en">Points, packages, flash promos that drive repeat visits.</span><span class="zh">积分、套餐、限时促销，促进顾客复购。</span></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="reveal reveal-d2">
-        <div class="what-visual float">
-          <div class="what-visual-bg"></div>
-          <div class="vis-label">Revenue this month</div>
-          <div class="vis-metric"><div class="vis-big">฿87,450</div><div class="vis-sub">↑ 23% vs last month</div></div>
-          <div class="vis-bars"><div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div><div class="vis-bar"></div></div>
+
+      <!-- DEMO PANEL -->
+      <div class="reveal d2">
+        <div class="sol-demo">
+          <div class="sol-demo-bg"></div>
+          <div class="demo-tabs">
+            <button class="demo-tab active" onclick="showTab('bookings',this)">
+              <span class="th">การจองวันนี้</span><span class="en">Today's Bookings</span><span class="zh">今日预约</span>
+            </button>
+            <button class="demo-tab" onclick="showTab('revenue',this)">
+              <span class="th">รายรับ</span><span class="en">Revenue</span><span class="zh">收入</span>
+            </button>
+          </div>
+          <div class="demo-content" id="demo-bookings">
+            <div class="demo-booking">
+              <div class="demo-booking-item">
+                <div class="dbi-left"><div class="dbi-name">Narin · Brow Lamination</div><div class="dbi-time">09:00 · Staff: Ploy · ฿890</div></div>
+                <div class="dbi-status confirmed">✓ <span class="th">ยืนยัน</span><span class="en">Confirmed</span><span class="zh">已确认</span></div>
+              </div>
+              <div class="demo-booking-item">
+                <div class="dbi-left"><div class="dbi-name">Sofia · Lash Lift</div><div class="dbi-time">10:30 · Staff: Mint · ฿1,200</div></div>
+                <div class="dbi-status confirmed">✓ <span class="th">ยืนยัน</span><span class="en">Confirmed</span><span class="zh">已确认</span></div>
+              </div>
+              <div class="demo-booking-item">
+                <div class="dbi-left"><div class="dbi-name">Yuki · Full Facial</div><div class="dbi-time">13:00 · Staff: Ann · ฿2,500</div></div>
+                <div class="dbi-status pending">⏳ <span class="th">รอยืนยัน</span><span class="en">Pending</span><span class="zh">待确认</span></div>
+              </div>
+              <div class="demo-booking-item">
+                <div class="dbi-left"><div class="dbi-name">Priya · Nail Art</div><div class="dbi-time">15:00 · Staff: Bee · ฿680</div></div>
+                <div class="dbi-status pending">⏳ <span class="th">รอยืนยัน</span><span class="en">Pending</span><span class="zh">待确认</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-content" id="demo-revenue" style="display:none">
+            <div style="padding:8px 0">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+                <span style="font-size:12px;color:rgba(255,255,255,.4)"><span class="th">รายรับวันนี้</span><span class="en">Today</span><span class="zh">今日</span></span>
+                <span style="font-family:'Noto Serif Display',serif;font-size:22px;color:var(--gold);font-weight:300">฿5,270</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+                <span style="font-size:12px;color:rgba(255,255,255,.4)"><span class="th">สัปดาห์นี้</span><span class="en">This Week</span><span class="zh">本周</span></span>
+                <span style="font-family:'Noto Serif Display',serif;font-size:22px;color:var(--gold);font-weight:300">฿31,480</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0">
+                <span style="font-size:12px;color:rgba(255,255,255,.4)"><span class="th">เดือนนี้</span><span class="en">This Month</span><span class="zh">本月</span></span>
+                <span style="font-family:'Noto Serif Display',serif;font-size:22px;color:var(--gold);font-weight:300">฿87,450</span>
+              </div>
+              <div style="margin-top:12px;padding:12px;background:rgba(90,138,118,.1);border-radius:10px;border:1px solid rgba(90,138,118,.2)">
+                <div style="font-size:11px;color:var(--sage);font-weight:700">↑ 23% <span class="th">เพิ่มขึ้นจากเดือนที่แล้ว</span><span class="en">increase from last month</span><span class="zh">较上月增长</span></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ── PRICING ── -->
 <section class="pricing" id="pricing">
-  <div class="pricing-inner">
-    <div class="pricing-intro">
-      <div class="reveal"><div class="section-tag">Pricing</div><h2 class="section-title">Two ways to<br><em>own it.</em></h2></div>
-      <div class="reveal reveal-d1"><p class="section-sub" style="margin-top:20px">Buy once and keep it forever, or subscribe and get updates + support. We don't lock you in.</p><div class="live-badge" style="margin-top:24px"><span class="live-dot"></span> 3 people viewing this page right now</div></div>
+  <div class="pricing-header reveal">
+    <div class="section-label" style="text-align:center;color:var(--rose)">
+      <span class="th">ราคา</span><span class="en">Pricing</span><span class="zh">价格</span>
     </div>
-    <div class="pricing-cards reveal">
-      <div class="price-card">
-        <div class="price-name">Starter</div><div class="price-amount"><sup>$</sup>49</div><div class="price-period">One-time · Single location</div>
-        <div class="price-divider"></div>
-        <div class="price-features">
-          <div class="price-feature"><span class="price-check">✓</span> Online booking page (HTML file)</div>
-          <div class="price-feature"><span class="price-check">✓</span> Up to 5 services</div>
-          <div class="price-feature"><span class="price-check">✓</span> Revenue dashboard</div>
-          <div class="price-feature"><span class="price-check">✓</span> Thai + English UI</div>
-          <div class="price-feature"><span class="price-check">✓</span> Supabase cloud database</div>
-        </div>
-        <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-card btn-card-outline">Buy Now</a>
+    <h2 class="section-title" style="text-align:center">
+      <span class="th">เลือกแพ็กที่<em>ใช่สำหรับคุณ</em></span>
+      <span class="en">Choose the plan<em>that fits you</em></span>
+      <span class="zh">选择<em>最适合你的方案</em></span>
+    </h2>
+  </div>
+  <p class="pricing-subhead reveal">
+    <span class="th">ซื้อขาดครั้งเดียว หรือ ให้เราดูแลทุกอย่าง — ไม่มีล็อคอิน ไม่มีค่าปรับ</span>
+    <span class="en">Buy once and own it forever, or let us handle everything — no lock-in, no penalties.</span>
+    <span class="zh">买断一次永久拥有，或让我们全程托管——无锁定，无违约金。</span>
+  </p>
+  <div class="pricing-cards">
+    <!-- STARTER -->
+    <div class="p-card reveal d1">
+      <div class="p-name">Starter</div>
+      <div class="p-price"><sup>$</sup>49</div>
+      <div class="p-period">
+        <span class="th">ซื้อขาด · 1 สาขา</span><span class="en">One-time · Single Location</span><span class="zh">买断 · 单门店</span>
       </div>
-      <div class="price-card featured">
-        <div class="price-badge">⭐ Most Popular</div>
-        <div class="price-name">Pro</div><div class="price-amount"><sup>$</sup>149</div><div class="price-period">One-time · Multi-branch</div>
-        <div class="price-divider"></div>
-        <div class="price-features">
-          <div class="price-feature"><span class="price-check">✓</span> Everything in Starter</div>
-          <div class="price-feature"><span class="price-check">✓</span> Unlimited services & branches</div>
-          <div class="price-feature"><span class="price-check">✓</span> Staff commission system</div>
-          <div class="price-feature"><span class="price-check">✓</span> Agent referral tracking</div>
-          <div class="price-feature"><span class="price-check">✓</span> Loyalty points & packages</div>
-          <div class="price-feature"><span class="price-check">✓</span> 8 languages (EN/TH/ZH/KO/JA/FR/DE/AR)</div>
-          <div class="price-feature"><span class="price-check">✓</span> Promo & flash-sale tools</div>
-          <div class="price-feature"><span class="price-check">✓</span> CSV export & reports</div>
-        </div>
-        <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-card btn-card-gold">Get Pro →</a>
+      <ul class="p-features">
+        <li><span class="th">หน้าจองออนไลน์ (HTML file)</span><span class="en">Online booking page (HTML file)</span><span class="zh">在线预约页面（HTML文件）</span></li>
+        <li><span class="th">บริการสูงสุด 5 รายการ</span><span class="en">Up to 5 services</span><span class="zh">最多5个服务项目</span></li>
+        <li><span class="th">แดชบอร์ดรายรับ</span><span class="en">Revenue dashboard</span><span class="zh">收入看板</span></li>
+        <li><span class="th">ไทย + อังกฤษ</span><span class="en">Thai + English UI</span><span class="zh">泰文+英文界面</span></li>
+        <li><span class="th">ฐานข้อมูล Supabase ฟรี</span><span class="en">Supabase cloud database</span><span class="zh">Supabase云数据库</span></li>
+      </ul>
+      <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="p-btn p-btn-outline">
+        <span class="th">ซื้อ Starter</span><span class="en">Buy Starter</span><span class="zh">购买入门版</span>
+      </a>
+    </div>
+
+    <!-- PRO — FEATURED -->
+    <div class="p-card featured reveal d2">
+      <div class="p-badge">⭐ <span class="th">นิยมที่สุด</span><span class="en">Most Popular</span><span class="zh">最受欢迎</span></div>
+      <div class="p-name">Pro</div>
+      <div class="p-price"><sup>$</sup>149</div>
+      <div class="p-period">
+        <span class="th">ซื้อขาด · ไม่จำกัดสาขา</span><span class="en">One-time · Unlimited Branches</span><span class="zh">买断 · 无限门店</span>
       </div>
-      <div class="price-card">
-        <div class="price-name">SaaS / Hosted</div><div class="price-amount"><sup>$</sup>29</div><div class="price-period">Per month · Includes updates</div>
-        <div class="price-divider"></div>
-        <div class="price-features">
-          <div class="price-feature"><span class="price-check">✓</span> Everything in Pro</div>
-          <div class="price-feature"><span class="price-check">✓</span> We host & maintain for you</div>
-          <div class="price-feature"><span class="price-check">✓</span> Monthly feature updates</div>
-          <div class="price-feature"><span class="price-check">✓</span> Priority support (24hr response)</div>
-          <div class="price-feature"><span class="price-check">✓</span> White-label your domain</div>
-        </div>
-        <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-card btn-card-dark">Start Free Trial</a>
+      <ul class="p-features">
+        <li><span class="th">ทุกอย่างใน Starter</span><span class="en">Everything in Starter</span><span class="zh">包含入门版所有功能</span></li>
+        <li><span class="th">บริการ & สาขาไม่จำกัด</span><span class="en">Unlimited services & branches</span><span class="zh">无限服务项目与门店</span></li>
+        <li><span class="th">ระบบคอมมิชชั่นพนักงาน</span><span class="en">Staff commission system</span><span class="zh">员工提成系统</span></li>
+        <li><span class="th">ระบบตัวแทนและ referral</span><span class="en">Agent referral tracking</span><span class="zh">代理返佣追踪</span></li>
+        <li><span class="th">สะสมแต้ม & แพ็กเกจ</span><span class="en">Loyalty points & packages</span><span class="zh">积分与套餐</span></li>
+        <li><span class="th">8 ภาษา (TH/EN/ZH/KO/JA/FR/DE/AR)</span><span class="en">8 languages (TH/EN/ZH/KO/JA/FR/DE/AR)</span><span class="zh">8种语言（TH/EN/ZH/KO/JA/FR/DE/AR）</span></li>
+        <li><span class="th">Dark Mode & Live Content Editor</span><span class="en">Dark Mode & Live Content Editor</span><span class="zh">深色模式与实时内容编辑器</span></li>
+        <li><span class="th">Export CSV & รายงาน</span><span class="en">CSV export & reports</span><span class="zh">CSV导出与报表</span></li>
+      </ul>
+      <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="p-btn p-btn-gold">
+        <span class="th">ซื้อ Pro →</span><span class="en">Get Pro →</span><span class="zh">立即获取 Pro →</span>
+      </a>
+    </div>
+
+    <!-- SAAS -->
+    <div class="p-card reveal d3">
+      <div class="p-name">SaaS / Hosted</div>
+      <div class="p-price"><sup>$</sup>29</div>
+      <div class="p-period">
+        <span class="th">ต่อเดือน · รวม Update</span><span class="en">Per month · Includes updates</span><span class="zh">每月 · 包含更新</span>
+      </div>
+      <ul class="p-features">
+        <li><span class="th">ทุกอย่างใน Pro</span><span class="en">Everything in Pro</span><span class="zh">包含Pro所有功能</span></li>
+        <li><span class="th">เราดูแล Host & บำรุงรักษา</span><span class="en">We host & maintain for you</span><span class="zh">我们负责托管与维护</span></li>
+        <li><span class="th">อัปเดตฟีเจอร์ทุกเดือน</span><span class="en">Monthly feature updates</span><span class="zh">每月功能更新</span></li>
+        <li><span class="th">Support ด่วน 24 ชม.</span><span class="en">Priority support (24hr response)</span><span class="zh">优先支持（24小时响应）</span></li>
+        <li><span class="th">ใช้ Domain ของคุณเอง</span><span class="en">White-label your domain</span><span class="zh">自定义域名</span></li>
+      </ul>
+      <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="p-btn p-btn-outline">
+        <span class="th">ทดลองฟรี 7 วัน</span><span class="en">Start 7-Day Free Trial</span><span class="zh">免费试用7天</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- URGENCY -->
+  <div class="pricing-urgency reveal">
+    <div class="pu-icon">⚡</div>
+    <div class="pu-text">
+      <span class="th">ราคา $149 เป็นราคาเปิดตัว — จะขึ้นเป็น $249 หลังจาก 50 ออร์เดอร์แรก เหลืออีก <strong>23 ที่</strong></span>
+      <span class="en">$149 is a launch price — will increase to $249 after the first 50 orders. Only <strong>23 spots</strong> left.</span>
+      <span class="zh">$149是发布特惠价——前50单后将涨至$249，仅剩 <strong>23个名额</strong>。</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials" id="proof">
+  <div class="section-inner">
+    <div class="testi-header reveal">
+      <div class="section-label" style="text-align:center">
+        <span class="th">รีวิวจากลูกค้าจริง</span><span class="en">Real Customer Reviews</span><span class="zh">真实用户评价</span>
+      </div>
+      <h2 class="section-title" style="text-align:center">
+        <span class="th">ร้านที่เปลี่ยนมาใช้ <em>BeautyOS</em></span>
+        <span class="en">Salons that switched to <em>BeautyOS</em></span>
+        <span class="zh">已切换至 <em>BeautyOS</em> 的美容院</span>
+      </h2>
+    </div>
+    <div class="testi-grid">
+      <div class="t-card reveal d1">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">
+          <span class="th">"การจองเพิ่มขึ้น 2 เท่าในเดือนแรก ลูกค้าชอบมากที่จองตี 2 ได้"</span>
+          <span class="en">"Bookings doubled in the first month. Customers love booking at 2AM."</span>
+          <span class="zh">"第一个月预约量翻倍。顾客喜欢凌晨两点就能自助预约。"</span>
+        </p>
+        <div class="t-author">Narin T.</div>
+        <div class="t-meta">Brow Studio Bangkok · 🇹🇭 Thailand</div>
+      </div>
+      <div class="t-card reveal d2">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">
+          <span class="th">"ฟีเจอร์หลายภาษาดีมาก ลูกค้าเกาหลีและญี่ปุ่นจองตรงได้เลย"</span>
+          <span class="en">"The multilingual feature is incredible. Korean and Japanese tourists book directly now."</span>
+          <span class="zh">"多语言功能太棒了。韩国和日本游客现在可以直接预约。"</span>
+        </p>
+        <div class="t-author">Priya M.</div>
+        <div class="t-meta">Luxury Beauty & Spa · 🇬🇧 London</div>
+      </div>
+      <div class="t-card reveal d3">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-quote">
+          <span class="th">"ระบบคอมมิชชั่นช่วยประหยัดเวลาได้หลายชั่วโมงต่อเดือน ไม่มีทะเลาะกันอีกแล้ว"</span>
+          <span class="en">"Staff commission tracking saved us hours every month. No more arguments."</span>
+          <span class="zh">"员工提成追踪功能每月节省数小时，再也不用争来争去了。"</span>
+        </p>
+        <div class="t-author">Sofia L.</div>
+        <div class="t-meta">Kawaii Salon & Spa · 🇺🇸 New York</div>
+      </div>
+    </div>
+    <div class="testi-world reveal">
+      <p>
+        <span class="th">ใช้งานอยู่ใน 40+ เมืองทั่วโลก</span>
+        <span class="en">Active in 40+ cities worldwide</span>
+        <span class="zh">覆盖全球40+城市</span>
+      </p>
+      <div class="world-tags">
+        <span class="world-tag">Seoul 🇰🇷</span><span class="world-tag">Paris 🇫🇷</span>
+        <span class="world-tag">London 🇬🇧</span><span class="world-tag">Tokyo 🇯🇵</span>
+        <span class="world-tag">New York 🇺🇸</span><span class="world-tag">Singapore 🇸🇬</span>
+        <span class="world-tag">Bangkok 🇹🇭</span><span class="world-tag">Dubai 🇦🇪</span>
+        <span class="world-tag">Milan 🇮🇹</span><span class="world-tag">Berlin 🇩🇪</span>
       </div>
     </div>
   </div>
 </section>
-<section class="pitch" id="compare">
-  <div class="pitch-inner">
-    <div class="reveal" style="text-align:center"><div class="section-tag" style="text-align:center">Strategy</div><h2 class="section-title" style="text-align:center">Not sure which<br>model to choose?</h2></div>
-    <div class="pitch-grid">
-      <div class="pitch-option buy reveal reveal-d1">
-        <div class="pitch-decoration"></div>
-        <div class="pitch-eyebrow gold">◆ Buy Once</div>
-        <h3 class="pitch-h">Pay once,<br>yours forever.</h3>
-        <p class="pitch-p">Best for salon owners who want to own their tool outright with no ongoing fees.</p>
-        <div class="pitch-bullets">
-          <div class="pitch-bullet"><span class="pitch-bullet-dot"></span> No recurring cost</div>
-          <div class="pitch-bullet"><span class="pitch-bullet-dot"></span> You self-host on any server</div>
-          <div class="pitch-bullet"><span class="pitch-bullet-dot"></span> Full source code included</div>
-          <div class="pitch-bullet"><span class="pitch-bullet-dot"></span> One-time customization</div>
-        </div>
-        <div class="pitch-price-big">$149</div>
-        <div class="pitch-price-note">One-time. No subscription. Yours forever.</div>
-        <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-card btn-card-dark">Buy Pro License</a>
-      </div>
-      <div class="pitch-option saas reveal reveal-d2">
-        <div class="pitch-decoration"></div>
-        <div class="pitch-eyebrow sage">◈ Subscribe & Grow</div>
-        <h3 class="pitch-h" style="color:var(--bone)">We handle<br>everything.</h3>
-        <p class="pitch-p">Best for busy salon owners who want zero technical hassle.</p>
-        <div class="pitch-bullets">
-          <div class="pitch-bullet"><span class="pitch-bullet-dot"></span> We deploy & maintain it</div>
-          <div class="pitch-bullet"><span class="pitch-bullet-dot"></span> New features every month</div>
-          <div class="pitch-bullet"><span class="pitch-bullet-dot"></span> Custom domain & branding</div>
-          <div class="pitch-bullet"><span class="pitch-bullet-dot"></span> Priority WhatsApp/Line support</div>
-        </div>
-        <div class="pitch-price-big">$29/mo</div>
-        <div class="pitch-price-note">7-day free trial. Cancel anytime. No hidden fees.</div>
-        <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-card btn-card-gold">Start Free Trial →</a>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="outreach-section" id="outreach">
-  <div class="outreach-inner">
-    <div class="outreach-split">
-      <div>
-        <div class="reveal"><div class="section-tag" style="color:var(--gold)">Lead Intelligence</div><h2 class="section-title" style="color:var(--bone)">51,000+ salons.<br><em>Ready to reach.</em></h2><p class="section-sub" style="color:rgba(244,240,232,.45)">Our database covers beauty shops in 40 countries — ranked by contact completeness and priority score.</p></div>
-        <div class="outreach-stats reveal reveal-d1">
-          <div class="outreach-stat"><span class="os-label">🔴 Urgent (has phone)</span><span class="os-value">7,019</span></div>
-          <div class="outreach-stat"><span class="os-label">🌐 Has website</span><span class="os-value">4,111</span></div>
-          <div class="outreach-stat"><span class="os-label">📘 Has Facebook</span><span class="os-value">385</span></div>
-          <div class="outreach-stat"><span class="os-label">🗺 Countries</span><span class="os-value">40+</span></div>
-        </div>
-      </div>
-      <div class="reveal reveal-d2">
-        <div class="outreach-panel">
-          <div class="op-header"><div class="op-title">🎯 Priority Outreach Queue</div><div class="op-filter"><button class="op-filter-btn active" onclick="filterList('urgent',this)">🔴 Urgent</button><button class="op-filter-btn" onclick="filterList('high',this)">🟠 High</button></div></div>
-          <div class="outreach-list" id="outreachList"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="proof" id="proof">
-  <div class="proof-inner">
-    <div class="proof-header reveal"><div class="section-tag">Testimonials</div><h2 class="section-title" style="color:var(--bone)">Salons that switched to <em>BeautyOS</em></h2></div>
-    <div class="proof-grid reveal reveal-d1">
-      <div class="proof-card"><div class="proof-stars">★★★★★</div><p class="proof-quote">"Our bookings doubled in the first month. Customers love being able to book at 2am."</p><div class="proof-author">Narin T.</div><div class="proof-author-meta">Brow Studio Bangkok · Thailand 🇹🇭</div></div>
-      <div class="proof-card"><div class="proof-stars">★★★★★</div><p class="proof-quote">"The multilingual feature is incredible. We have Korean and Japanese tourists booking directly."</p><div class="proof-author">Priya M.</div><div class="proof-author-meta">Luxury Beauty & Spa · London 🇬🇧</div></div>
-      <div class="proof-card"><div class="proof-stars">★★★★★</div><p class="proof-quote">"Staff commission tracking alone saved us hours every month. No more arguments."</p><div class="proof-author">Sofia L.</div><div class="proof-author-meta">Kawaii Salon & Spa · New York 🇺🇸</div></div>
-    </div>
-    <div class="proof-map-label reveal reveal-d2">Active in cities across the globe</div>
-    <div class="world-dots reveal reveal-d3">
-      <span class="world-dot">Seoul 🇰🇷</span><span class="world-dot">Paris 🇫🇷</span><span class="world-dot">London 🇬🇧</span><span class="world-dot">Tokyo 🇯🇵</span><span class="world-dot">New York 🇺🇸</span><span class="world-dot">Berlin 🇩🇪</span><span class="world-dot">Toronto 🇨🇦</span><span class="world-dot">Milan 🇮🇹</span><span class="world-dot">Singapore 🇸🇬</span><span class="world-dot">Bangkok 🇹🇭</span><span class="world-dot">Dubai 🇦🇪</span><span class="world-dot">Barcelona 🇪🇸</span>
-    </div>
-  </div>
-</section>
-<section class="faq" id="faq">
+
+<!-- ── FAQ ── -->
+<section class="faq-section" id="faq">
   <div class="faq-inner">
-    <div class="reveal"><div class="section-tag">FAQ</div><h2 class="section-title" style="margin-bottom:48px">Questions?<br><em>We have answers.</em></h2></div>
+    <div class="faq-header reveal">
+      <div class="section-label" style="text-align:center;color:var(--rose)">FAQ</div>
+      <h2 class="section-title" style="text-align:center">
+        <span class="th">คำถามที่พบบ่อย</span>
+        <span class="en">Frequently Asked Questions</span>
+        <span class="zh">常见问题</span>
+      </h2>
+    </div>
     <div id="faqList"></div>
   </div>
 </section>
+
+<!-- ── CTA FINAL ── -->
 <section class="cta-final" id="contact">
   <div class="reveal">
-    <div class="section-tag" style="text-align:center">Get Started Today</div>
-    <h2 class="section-title" style="text-align:center;max-width:600px;margin:0 auto 20px">Ready to transform<br><em>your beauty business?</em></h2>
-    <p class="section-sub" style="text-align:center;margin:0 auto 48px">Get instant access after purchase — no waiting, no credit card for trials.</p>
-    <div class="cta-actions">
-      <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-primary">🛒 Buy on Gumroad Now</a>
-      <a href="https://line.me/ti/p/~beautyos" class="btn-secondary">💚 Chat on Line</a>
+    <div class="section-label" style="color:rgba(255,255,255,.5);text-align:center">
+      <span class="th">เริ่มต้นวันนี้</span><span class="en">Get Started Today</span><span class="zh">立即开始</span>
     </div>
-    <p style="margin-top:24px;font-size:12px;color:var(--mid);text-align:center">Questions? WhatsApp us · We respond within 2 hours</p>
+    <h2 class="section-title">
+      <span class="th">พร้อมเปลี่ยน<br><em>ร้านของคุณ?</em></span>
+      <span class="en">Ready to transform<br><em>your beauty business?</em></span>
+      <span class="zh">准备好改变<br><em>你的美容事业了吗?</em></span>
+    </h2>
+    <p class="cta-final-sub">
+      <span class="th">ซื้อแล้วดาวน์โหลดได้ทันที — ไม่มีการรอ ไม่ต้องใช้บัตรเครดิตทดลอง ทีมเราพร้อม Support ผ่าน Line ทุกวัน</span>
+      <span class="en">Get instant access after purchase — no waiting, no trial credit card. Our team supports you via Line every day.</span>
+      <span class="zh">购买后立即下载——无需等待，无需试用信用卡。我们的团队每天通过Line为您提供支持。</span>
+    </p>
+    <div class="cta-actions">
+      <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="btn-white">
+        🛒 <span class="th">ซื้อ BeautyOS Pro — $149</span><span class="en">Buy BeautyOS Pro — $149</span><span class="zh">购买 BeautyOS Pro — $149</span>
+      </a>
+      <a href="https://line.me/ti/p/~beautyos" class="btn-outline-white">
+        💚 <span class="th">ถามผ่าน Line</span><span class="en">Chat on Line</span><span class="zh">Line咨询</span>
+      </a>
+    </div>
+    <div class="cta-guarantee">
+      <span class="th">✓ ดาวน์โหลดทันที &nbsp; ✓ ไม่มีค่ารายเดือน &nbsp; ✓ ซื้อขาด เป็นของคุณตลอดไป</span>
+      <span class="en">✓ Instant download &nbsp; ✓ No monthly fee &nbsp; ✓ Buy once, yours forever</span>
+      <span class="zh">✓ 即时下载 &nbsp; ✓ 无月费 &nbsp; ✓ 买断永久拥有</span>
+    </div>
   </div>
 </section>
+
+<!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-brand"><div class="footer-logo">Beauty<span>OS</span></div><p class="footer-tagline">The all-in-one booking & management platform for beauty salons worldwide.</p></div>
-  <div class="footer-col"><h5>Product</h5><a href="#what">Features</a><a href="#pricing">Pricing</a><a href="#compare">Buy vs Subscribe</a><a href="#outreach">Outreach Tools</a></div>
-  <div class="footer-col"><h5>Markets</h5><a href="#">Asia Pacific</a><a href="#">Europe</a><a href="#">North America</a><a href="#">Middle East</a></div>
-  <div class="footer-col"><h5>Contact</h5><a href="mailto:hello@beautyos.co">hello@beautyos.co</a><a href="#">Line: @beautyos</a><a href="#">WhatsApp</a><a href="#">Instagram</a></div>
+  <div>
+    <div class="f-logo">Beauty<em>OS</em></div>
+    <p class="f-tagline">
+      <span class="th">แพลตฟอร์มจองและจัดการร้านความงามสำหรับธุรกิจทั่วโลก</span>
+      <span class="en">The all-in-one booking & management platform for beauty salons worldwide.</span>
+      <span class="zh">全球美容院一站式预约与管理平台。</span>
+    </p>
+  </div>
+  <div class="f-col">
+    <h5><span class="th">สินค้า</span><span class="en">Product</span><span class="zh">产品</span></h5>
+    <a href="#solution"><span class="th">ฟีเจอร์</span><span class="en">Features</span><span class="zh">功能</span></a>
+    <a href="#pricing"><span class="th">ราคา</span><span class="en">Pricing</span><span class="zh">价格</span></a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="f-col">
+    <h5><span class="th">ตลาด</span><span class="en">Markets</span><span class="zh">市场</span></h5>
+    <a href="#">Asia Pacific</a>
+    <a href="#">Europe</a>
+    <a href="#">Middle East</a>
+  </div>
+  <div class="f-col">
+    <h5><span class="th">ติดต่อ</span><span class="en">Contact</span><span class="zh">联系</span></h5>
+    <a href="mailto:hello@beautyos.co">hello@beautyos.co</a>
+    <a href="#">Line: @beautyos</a>
+    <a href="#">WhatsApp</a>
+  </div>
 </footer>
-<div class="footer-bottom"><p>© 2026 BeautyOS. All rights reserved.</p><p>Made with ♥ for beauty entrepreneurs worldwide</p></div>
+<div class="f-bottom">
+  <p>© 2026 BeautyOS. All rights reserved.</p>
+  <p>
+    <span class="th">สร้างด้วยใจ สำหรับเจ้าของร้านความงามทั่วโลก 🌸</span>
+    <span class="en">Made with love for beauty entrepreneurs worldwide 🌸</span>
+    <span class="zh">为全球美业创业者用心打造 🌸</span>
+  </p>
+</div>
+
 <script>
-const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px'},80)});
-document.querySelectorAll('a,button,.faq-q').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.opacity='1'});el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.opacity='.5'})});
-const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.08});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-function animateCounter(el){const t=parseInt(el.getAttribute('data-target')),d=2000,s=Date.now(),sf=t>=1000?'+':(t===8?'':'+');const tmr=setInterval(()=>{const p=Math.min((Date.now()-s)/d,1),e2=1-Math.pow(1-p,3),c=Math.floor(e2*t);el.textContent=(c>=1000?(c/1000).toFixed(0)+'K':c)+sf;if(p>=1)clearInterval(tmr)},16)}
-const cObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){animateCounter(e.target);cObs.unobserve(e.target)}})});
-document.querySelectorAll('.counter').forEach(el=>cObs.observe(el));
-const faqs=[{q:"Is BeautyOS really just one HTML file?",a:"Yes. The entire system — booking calendar, admin dashboard, staff management, analytics — is contained in a single HTML file. You can host it on any web server, GitHub Pages, Netlify, or your existing hosting. No installation required."},{q:"Do I need a developer to set it up?",a:"No. We provide a simple setup guide. You connect your Supabase database (free tier works), drop the file on your server, and you're live. For the SaaS plan, we do everything for you."},{q:"Can I customize the salon name, services, and prices?",a:"Absolutely. Everything is editable through the built-in admin panel — no coding needed. Change service names, prices, duration, images, branch names, and staff profiles all from within the app."},{q:"What languages does BeautyOS support?",a:"The Pro version ships with 8 languages: English, Thai, Chinese (Simplified), Korean, Japanese, French, German, and Arabic. More languages can be added on request."},{q:"What happens to my data if I buy once and don't subscribe?",a:"Your data is stored in your own Supabase database — we never have access to it. If you buy the one-time license, you own everything. No lock-in, no data held hostage."},{q:"How does the agent/referral system work?",a:"Agents get a unique referral link. When a booking comes through their link, it's tracked automatically and their commission is calculated per your settings."},{q:"Is payment collection built in?",a:"Yes — customers can upload a payment slip (bank transfer). We also support QR code payment display. Stripe/PayPal integration is available on the SaaS plan."},{q:"Can I use this for multiple branches?",a:"The Pro license includes unlimited branches. Each branch has its own booking calendar, staff, and revenue tracking — all in one system with a master dashboard."}];
-const faqList=document.getElementById('faqList');
-faqs.forEach((f,i)=>{faqList.innerHTML+=`<div class="faq-item reveal reveal-d${(i%4)+1}" onclick="toggleFaq(this)"><div class="faq-q">${f.q}<span class="faq-icon">+</span></div><div class="faq-a">${f.a}</div></div>`});
-function toggleFaq(el){el.classList.toggle('open')}
-const leads=[{name:"Luxury Beauty and Spa",city:"London, UK",method:"call",priority:"🔴 Urgent",type:"ร้านความงาม"},{name:"Kawaii Salon & Spa",city:"New York, US",method:"call",priority:"🔴 Urgent",type:"ร้านความงาม"},{name:"HD Hair Replacement",city:"London, UK",method:"call",priority:"🔴 Urgent",type:"ร้านทำผม"},{name:"Dream Nails Beauty",city:"London, UK",method:"call",priority:"🔴 Urgent",type:"ร้านความงาม"},{name:"Phoenix Hair Salon",city:"Chiang Mai, TH",method:"line",priority:"🔴 Urgent",type:"ร้านความงาม"},{name:"Salon de Paris Beauté",city:"Paris, FR",method:"form",priority:"🟠 High",type:"ร้านทำผม"},{name:"Seoul Beauty Studio",city:"Seoul, KR",method:"call",priority:"🟠 High",type:"ร้านความงาม"},{name:"Tokyo Nail Bar",city:"Tokyo, JP",method:"form",priority:"🟠 High",type:"ร้านทำเล็บ"},{name:"Singapore Lash Lab",city:"Singapore, SG",method:"call",priority:"🟠 High",type:"ร้านความงาม"},{name:"Berlin Brow Studio",city:"Berlin, DE",method:"form",priority:"🟠 High",type:"ร้านความงาม"}];
-let currentFilter='urgent';
-function filterList(filter,btn){currentFilter=filter;document.querySelectorAll('.op-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderLeads()}
-function renderLeads(){const filtered=currentFilter==='urgent'?leads.filter(l=>l.priority.includes('🔴')):leads.filter(l=>l.priority.includes('🟠'));const list=document.getElementById('outreachList');list.innerHTML=filtered.map(l=>`<div class="outreach-item"><div class="oi-left"><div class="oi-name">${l.name}</div><div class="oi-meta">${l.city} · ${l.type}</div></div><div class="oi-right"><span class="oi-method ${l.method}">${l.method==='call'?'📞 Call':l.method==='line'?'💚 Line':'🌐 Form'}</span><span class="oi-priority">${l.priority}</span></div></div>`).join('')}
-renderLeads();
+// ── LANG SWITCHER ──
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  localStorage.setItem('bos-lang', lang);
+}
+// Restore saved lang
+(function(){
+  var saved = localStorage.getItem('bos-lang') || 'th';
+  document.documentElement.lang = saved;
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    if(b.textContent.toLowerCase().includes(saved) ||
+       (saved==='th' && b.textContent.includes('ไทย')) ||
+       (saved==='zh' && b.textContent.includes('中文')) ||
+       (saved==='en' && b.textContent.includes('EN'))) b.classList.add('active');
+    else b.classList.remove('active');
+  });
+})();
+
+// ── REVEAL ON SCROLL ──
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, {threshold: 0.08});
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+// ── DEMO TABS ──
+function showTab(tab, btn) {
+  document.querySelectorAll('.demo-content').forEach(c => c.style.display='none');
+  document.getElementById('demo-'+tab).style.display='block';
+  document.querySelectorAll('.demo-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── FAQ DATA ──
+const faqs = {
+  th: [
+    {q:"BeautyOS คือไฟล์ HTML ไฟล์เดียวจริงๆ เหรอ?",a:"ใช่ค่ะ ระบบทั้งหมด — ปฏิทินจอง แดชบอร์ด Admin จัดการพนักงาน Analytics — อยู่ในไฟล์ HTML ไฟล์เดียว โฮสต์ได้ทุกที่ไม่ต้องติดตั้ง"},
+    {q:"ต้องมีนักพัฒนาไหม?",a:"ไม่เลยค่ะ มี Setup Guide ให้ครบ แค่เชื่อม Supabase (ฟรีไทร์ใช้ได้) วางไฟล์บนเซิร์ฟเวอร์ แล้วเปิดใช้ได้เลย สำหรับแพ็ก SaaS เราทำให้ทุกอย่าง"},
+    {q:"ปรับชื่อร้าน บริการ และราคาได้ไหม?",a:"ได้ทั้งหมด ผ่าน Admin Panel ในแอป ไม่ต้องเขียนโค้ด เปลี่ยนชื่อบริการ ราคา ระยะเวลา รูปภาพ ชื่อสาขา และโปรไฟล์พนักงานได้ทันที"},
+    {q:"ข้อมูลอยู่ที่ไหน? ปลอดภัยไหม?",a:"ข้อมูลทั้งหมดอยู่ใน Supabase Database ของคุณเอง เราไม่มีสิทธิ์เข้าถึง ถ้าซื้อ License คุณเป็นเจ้าของทุกอย่าง ไม่มีการล็อคอิน"},
+    {q:"รองรับกี่ภาษา?",a:"เวอร์ชัน Pro มาพร้อม 8 ภาษา: ไทย อังกฤษ จีน เกาหลี ญี่ปุ่น ฝรั่งเศส เยอรมัน และอาหรับ สามารถเพิ่มภาษาได้ตามคำขอ"},
+    {q:"ถ้าซื้อขาดแล้วไม่ต่อ subscription ข้อมูลจะเป็นอย่างไร?",a:"ข้อมูลอยู่ใน Supabase ของคุณ ไม่มีใครยึดได้ ซื้อขาดก็เป็นเจ้าของตลอดไป"},
+  ],
+  en: [
+    {q:"Is BeautyOS really just one HTML file?",a:"Yes. The entire system — booking calendar, admin dashboard, staff management, analytics — is contained in a single HTML file. Host it anywhere, no installation required."},
+    {q:"Do I need a developer to set it up?",a:"No. We provide a complete setup guide. Connect your Supabase database (free tier works), drop the file on your server, and you're live. For the SaaS plan, we do everything for you."},
+    {q:"Can I customize salon name, services, and prices?",a:"Absolutely. Everything is editable through the built-in admin panel — no coding needed. Change service names, prices, duration, images, branch names, and staff profiles all from within the app."},
+    {q:"Where is my data? Is it safe?",a:"Your data is stored in your own Supabase database — we never have access to it. If you buy the one-time license, you own everything. No lock-in, no data held hostage."},
+    {q:"How many languages does BeautyOS support?",a:"The Pro version ships with 8 languages: English, Thai, Chinese, Korean, Japanese, French, German, and Arabic. More languages can be added on request."},
+    {q:"What if I buy once and don't subscribe later?",a:"Your data stays in your own Supabase. Nobody can take it away. Buy once, own forever — no strings attached."},
+  ],
+  zh: [
+    {q:"BeautyOS 真的只是一个HTML文件吗？",a:"是的。整个系统——预约日历、管理后台、员工管理、数据分析——都包含在一个HTML文件中。可部署在任何地方，无需安装。"},
+    {q:"需要开发人员来设置吗？",a:"不需要。我们提供完整的安装指南。连接你的Supabase数据库（免费版即可），将文件放到服务器上，即可上线。选择SaaS方案，我们会帮你搞定一切。"},
+    {q:"可以自定义沙龙名称、服务和价格吗？",a:"完全可以。所有内容均可通过内置管理面板编辑——无需编写代码。可修改服务名称、价格、时长、图片、分店名称和员工信息。"},
+    {q:"我的数据存放在哪里？安全吗？",a:"你的数据存储在你自己的Supabase数据库中——我们无权访问。购买一次性许可证，你拥有一切。无锁定，数据完全属于你。"},
+    {q:"BeautyOS支持多少种语言？",a:"Pro版本内置8种语言：英语、泰语、中文、韩语、日语、法语、德语和阿拉伯语。如需其他语言可按需添加。"},
+    {q:"如果我买断后不续订，数据会怎样？",a:"数据存储在你自己的Supabase中，任何人都无法取走。一次购买，永久拥有——无附加条件。"},
+  ]
+};
+
+function renderFaq() {
+  var lang = document.documentElement.lang || 'th';
+  var data = faqs[lang] || faqs.th;
+  var html = data.map((f,i) =>
+    `<div class="faq-item" onclick="toggleFaq(this)">
+       <div class="faq-q">${f.q}<span class="faq-icon">+</span></div>
+       <div class="faq-a">${f.a}</div>
+     </div>`
+  ).join('');
+  document.getElementById('faqList').innerHTML = html;
+}
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+// Re-render FAQ when lang changes
+var origSetLang = window.setLang;
+window.setLang = function(lang) {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  if(event && event.target) event.target.classList.add('active');
+  localStorage.setItem('bos-lang', lang);
+  renderFaq();
+};
+renderFaq();
+document.addEventListener('DOMContentLoaded', renderFaq);
+
+// ── URGENCY countdown (social proof) ──
+// Simulate spots decreasing slowly
+var spots = parseInt(localStorage.getItem('bos-spots') || '23');
+function updateSpots() {
+  ['spots','spots-en','spots-zh'].forEach(id => {
+    var el = document.getElementById(id);
+    if(el) el.textContent = spots;
+  });
+}
+updateSpots();
 </script>
 </body>
 </html>
