@@ -6,12 +6,15 @@
 <title>BeautyOS — ระบบจองออนไลน์ สำหรับร้านความงาม</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap">
 <style>
 :root{
-  --ink:#0D0D0D;--rose:#8B3A4A;--rose2:#C4736A;--gold:#C8A96E;--gold2:#E8CC8C;
-  --cream:#FDF8F2;--bone:#F4EDE4;--mid:#7A6A62;--light:#E8E0D8;--white:#FFFFFF;
-  --sage:#5A8A76;--warn:#D4622A;
-  --grad-gold:linear-gradient(135deg,#C8A96E,#E8CC8C,#C8A96E);
+  --ink:#2A0D16;--rose:#8B3A4A;--rose2:#9E6070;--gold:#8B3A4A;--gold2:#9E6070;
+  --cream:#FDF8F5;--bone:#F5EBF0;--mid:#9E6070;--light:#F7E0E5;--white:#FFFFFF;
+  --sage:#3fa065;--warn:#b83030;
+  --accent:#8B3A4A;--accent-light:#9E6070;--accent-pale:#F7E0E5;--accent-dark:#4A1E2A;
+  --bg:#FDF8F5;--bg2:#F5EBF0;--surface:#FFFFFF;--peach:#F7E0E5;--beige:#EDD0D8;--orange:#8B3A4A;
+  --grad-gold:linear-gradient(135deg,#8B3A4A,#9E6070,#8B3A4A);
   --grad-rose:linear-gradient(135deg,#8B3A4A,#C4736A);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -147,7 +150,7 @@ h1.hero-title em{font-style:italic;color:var(--rose);display:block}
 .pricing{background:var(--bone);padding:100px 48px}
 .pricing-header{text-align:center;margin-bottom:24px}
 .pricing-subhead{text-align:center;font-size:14px;color:var(--mid);margin-bottom:56px}
-.pricing-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
+.pricing-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:780px;margin:0 auto}
 .p-card{background:white;border-radius:20px;padding:36px 32px;border:1px solid var(--light);position:relative;transition:all .3s}
 .p-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.1)}
 .p-card.featured{background:var(--ink);border-color:var(--gold);color:white}
@@ -176,6 +179,27 @@ h1.hero-title em{font-style:italic;color:var(--rose);display:block}
 .pricing-urgency{max-width:1000px;margin:20px auto 0;padding:16px 24px;background:rgba(212,98,42,.08);border:1px solid rgba(212,98,42,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:10px}
 .pu-icon{font-size:18px}
 .pu-text{font-size:13px;font-weight:600;color:var(--warn)}
+
+/* ── PREVIEW ── */
+.preview-section{background:var(--cream);padding:100px 48px}
+.preview-header{text-align:center;margin-bottom:48px}
+.preview-frame-wrap{max-width:1000px;margin:0 auto;position:relative}
+.preview-browser{background:var(--ink);border-radius:16px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.2)}
+.preview-bar{display:flex;align-items:center;gap:10px;padding:14px 20px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.08)}
+.preview-dots{display:flex;gap:6px}
+.preview-dot{width:11px;height:11px;border-radius:50%}
+.preview-dot:nth-child(1){background:#ff5f57}
+.preview-dot:nth-child(2){background:#ffbd2e}
+.preview-dot:nth-child(3){background:#28c840}
+.preview-url{flex:1;background:rgba(255,255,255,.07);border-radius:6px;padding:5px 14px;font-size:11px;color:rgba(255,255,255,.35);font-family:'IBM Plex Sans Thai',sans-serif;margin:0 16px}
+.preview-open{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--gold);text-decoration:none;white-space:nowrap;transition:opacity .2s}
+.preview-open:hover{opacity:.7}
+.preview-iframe{width:100%;height:520px;border:none;display:block}
+.preview-links{display:flex;gap:14px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.preview-link-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;font-family:'IBM Plex Sans Thai',sans-serif;border:1.5px solid var(--light);color:var(--ink);background:white}
+.preview-link-btn:hover{background:var(--ink);color:white;border-color:var(--ink);transform:translateY(-2px)}
+.preview-link-btn.primary{background:var(--rose);color:white;border-color:var(--rose)}
+.preview-link-btn.primary:hover{background:var(--ink);border-color:var(--ink)}
 
 /* ── TESTIMONIALS ── */
 .testimonials{background:var(--ink);padding:100px 48px}
@@ -365,10 +389,10 @@ html[lang=zh] span.th,html[lang=zh] span.en{display:none!important}
           <span class="en">🛒 Get BeautyOS Pro — $149</span>
           <span class="zh">🛒 立即购买 BeautyOS Pro — $149</span>
         </a>
-        <a href="#solution" class="btn-secondary">
-          <span class="th">▶ ดูว่าระบบทำอะไรได้บ้าง</span>
-          <span class="en">▶ See how it works</span>
-          <span class="zh">▶ 了解系统功能</span>
+        <a href="#preview" class="btn-secondary">
+          <span class="th">👁 ดูตัวอย่างหน้าเว็บจริง</span>
+          <span class="en">👁 Preview Live Demo</span>
+          <span class="zh">👁 查看实际预览</span>
         </a>
         <div class="hero-note">
           <span class="th">✓ ดาวน์โหลดทันที &nbsp;·&nbsp; ✓ ไม่มีค่ารายเดือน &nbsp;·&nbsp; ✓ 1 ไฟล์ ใช้ได้เลย</span>
@@ -632,27 +656,8 @@ html[lang=zh] span.th,html[lang=zh] span.en{display:none!important}
     <span class="zh">买断一次永久拥有，或让我们全程托管——无锁定，无违约金。</span>
   </p>
   <div class="pricing-cards">
-    <!-- STARTER -->
-    <div class="p-card reveal d1">
-      <div class="p-name">Starter</div>
-      <div class="p-price"><sup>$</sup>49</div>
-      <div class="p-period">
-        <span class="th">ซื้อขาด · 1 สาขา</span><span class="en">One-time · Single Location</span><span class="zh">买断 · 单门店</span>
-      </div>
-      <ul class="p-features">
-        <li><span class="th">หน้าจองออนไลน์ (HTML file)</span><span class="en">Online booking page (HTML file)</span><span class="zh">在线预约页面（HTML文件）</span></li>
-        <li><span class="th">บริการสูงสุด 5 รายการ</span><span class="en">Up to 5 services</span><span class="zh">最多5个服务项目</span></li>
-        <li><span class="th">แดชบอร์ดรายรับ</span><span class="en">Revenue dashboard</span><span class="zh">收入看板</span></li>
-        <li><span class="th">ไทย + อังกฤษ</span><span class="en">Thai + English UI</span><span class="zh">泰文+英文界面</span></li>
-        <li><span class="th">ฐานข้อมูล Supabase ฟรี</span><span class="en">Supabase cloud database</span><span class="zh">Supabase云数据库</span></li>
-      </ul>
-      <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="p-btn p-btn-outline">
-        <span class="th">ซื้อ Starter</span><span class="en">Buy Starter</span><span class="zh">购买入门版</span>
-      </a>
-    </div>
-
     <!-- PRO — FEATURED -->
-    <div class="p-card featured reveal d2">
+    <div class="p-card featured reveal d1">
       <div class="p-badge">⭐ <span class="th">นิยมที่สุด</span><span class="en">Most Popular</span><span class="zh">最受欢迎</span></div>
       <div class="p-name">Pro</div>
       <div class="p-price"><sup>$</sup>149</div>
@@ -674,22 +679,22 @@ html[lang=zh] span.th,html[lang=zh] span.en{display:none!important}
       </a>
     </div>
 
-    <!-- SAAS -->
-    <div class="p-card reveal d3">
-      <div class="p-name">SaaS / Hosted</div>
-      <div class="p-price"><sup>$</sup>29</div>
+    <!-- SETUP SERVICE -->
+    <div class="p-card reveal d2">
+      <div class="p-name">Setup Service</div>
+      <div class="p-price"><sup>$</sup>50</div>
       <div class="p-period">
-        <span class="th">ต่อเดือน · รวม Update</span><span class="en">Per month · Includes updates</span><span class="zh">每月 · 包含更新</span>
+        <span class="th">จ่ายครั้งเดียว · เราตั้งให้ทุกอย่าง</span><span class="en">One-time · We set everything up for you</span><span class="zh">一次性 · 我们全程配置</span>
       </div>
       <ul class="p-features">
-        <li><span class="th">ทุกอย่างใน Pro</span><span class="en">Everything in Pro</span><span class="zh">包含Pro所有功能</span></li>
-        <li><span class="th">เราดูแล Host & บำรุงรักษา</span><span class="en">We host & maintain for you</span><span class="zh">我们负责托管与维护</span></li>
-        <li><span class="th">อัปเดตฟีเจอร์ทุกเดือน</span><span class="en">Monthly feature updates</span><span class="zh">每月功能更新</span></li>
-        <li><span class="th">Support ด่วน 24 ชม.</span><span class="en">Priority support (24hr response)</span><span class="zh">优先支持（24小时响应）</span></li>
-        <li><span class="th">ใช้ Domain ของคุณเอง</span><span class="en">White-label your domain</span><span class="zh">自定义域名</span></li>
+        <li><span class="th">ต้องมี Pro ก่อน</span><span class="en">Requires BeautyOS Pro</span><span class="zh">需先购买 Pro 版本</span></li>
+        <li><span class="th">เราตั้ง Supabase ให้</span><span class="en">Supabase database setup</span><span class="zh">我们配置 Supabase 数据库</span></li>
+        <li><span class="th">Deploy ขึ้น GitHub Pages</span><span class="en">GitHub Pages deployment</span><span class="zh">部署至 GitHub Pages</span></li>
+        <li><span class="th">ตั้งชื่อร้าน บริการ พนักงาน</span><span class="en">Salon name, services & staff configured</span><span class="zh">配置店名、服务项目与员工</span></li>
+        <li><span class="th">ส่ง link พร้อมใช้ใน 48 ชม.</span><span class="en">Live link delivered within 48 hours</span><span class="zh">48小时内交付可用链接</span></li>
       </ul>
-      <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="p-btn p-btn-outline">
-        <span class="th">ทดลองฟรี 7 วัน</span><span class="en">Start 7-Day Free Trial</span><span class="zh">免费试用7天</span>
+      <a href="https://tato15.gumroad.com/l/xvlhdf" target="_blank" class="p-btn p-btn-outline">
+        <span class="th">เพิ่ม Setup Service →</span><span class="en">Add Setup Service →</span><span class="zh">添加配置服务 →</span>
       </a>
     </div>
   </div>
@@ -702,6 +707,66 @@ html[lang=zh] span.th,html[lang=zh] span.en{display:none!important}
       <span class="en">$149 is a launch price — will increase to $249 after the first 50 orders. Only <strong>23 spots</strong> left.</span>
       <span class="zh">$149是发布特惠价——前50单后将涨至$249，仅剩 <strong>23个名额</strong>。</span>
     </div>
+  </div>
+</section>
+
+<!-- ── PREVIEW ── -->
+<section class="preview-section" id="preview">
+  <div class="preview-header reveal">
+    <div class="section-label" style="text-align:center;color:var(--rose)">
+      <span class="th">ตัวอย่างระบบจริง</span><span class="en">Live Preview</span><span class="zh">实际预览</span>
+    </div>
+    <h2 class="section-title" style="text-align:center">
+      <span class="th">ดูหน้าเว็บ<em>จริงก่อนซื้อ</em></span>
+      <span class="en">See the<em> real product</em> before buying</span>
+      <span class="zh">购买前先<em>查看真实产品</em></span>
+    </h2>
+    <p style="text-align:center;font-size:14px;color:var(--mid);margin-top:12px;max-width:500px;margin-left:auto;margin-right:auto">
+      <span class="th">คลิกดูหน้าจองและแดชบอร์ด Admin แบบ Live — เหมือนที่ลูกค้าร้านคุณจะเห็นจริงๆ</span>
+      <span class="en">Click to explore the live booking page and Admin dashboard — exactly what your customers will see.</span>
+      <span class="zh">点击查看实时预约页面和管理后台——这正是你的顾客将看到的样子。</span>
+    </p>
+  </div>
+
+  <div class="preview-frame-wrap reveal">
+    <div class="preview-browser">
+      <div class="preview-bar">
+        <div class="preview-dots">
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+        </div>
+        <div class="preview-url" id="previewUrlBar">tato15.gumroad.com/l/icoszf</div>
+        <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="preview-open">
+          <span class="th">↗ เปิดหน้าต่างใหม่</span>
+          <span class="en">↗ Open full page</span>
+          <span class="zh">↗ 新窗口打开</span>
+        </a>
+      </div>
+      <iframe
+        class="preview-iframe"
+        id="previewIframe"
+        src="https://tato15.gumroad.com/l/icoszf"
+        title="BeautyOS Pro Preview"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+      ></iframe>
+    </div>
+  </div>
+
+  <div class="preview-links reveal">
+    <a href="https://tato15.gumroad.com/l/icoszf" target="_blank" class="preview-link-btn primary">
+      <span>🛒</span>
+      <span class="th">ซื้อ BeautyOS Pro — $149</span>
+      <span class="en">Get BeautyOS Pro — $149</span>
+      <span class="zh">立即购买 Pro — $149</span>
+    </a>
+    <a href="https://tato15.gumroad.com/l/xvlhdf" target="_blank" class="preview-link-btn">
+      <span>⚙️</span>
+      <span class="th">เพิ่ม Setup Service — $50</span>
+      <span class="en">Add Setup Service — $50</span>
+      <span class="zh">添加配置服务 — $50</span>
+    </a>
   </div>
 </section>
 
